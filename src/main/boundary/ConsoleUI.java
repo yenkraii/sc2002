@@ -2,28 +2,19 @@ package src.main.boundary;
 
 import java.util.Scanner;
 import src.main.control.*; 
+
 // should only be interacting with control classes
 // boundary class of ConsoleUI cannot directly interact with entity classes
-import src.main.entity.UserAccount;
 
 public class ConsoleUI {
-    
-    private static String[] loginOptions = {"Login", "Logout"};
+
     private static Scanner consoleScanner = new Scanner(System.in);
     
     public static void main(String[] args) {
         int chosenOpt = -1;
-        UserAccount currUser = null;
 
         do{
-            if(currUser == null){ // no user login
-                // create separate login method
-                chosenOpt = getMenuInput(4);
-                continue;
-            }
-            // user is logged in
-
-            
+            // menu traversal
 
 
         } while (chosenOpt != -1);

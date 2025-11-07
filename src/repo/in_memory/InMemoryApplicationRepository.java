@@ -1,4 +1,4 @@
-package src.main.control;
+package src.repo.in_memory;
 
 public class InMemoryApplicationRepository {
     
