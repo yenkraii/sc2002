@@ -1,5 +1,5 @@
 package src.main.entity;
 
-public class CenterStaff {
+public class CenterStaff implements StaffActions{
     
 }
