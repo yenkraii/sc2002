@@ -51,4 +51,9 @@ public class InternshipApplication{
     public void withdraw() {
         this.status = ApplicationStatus.WITHDRAWN;
     }
+
+    public String toString() {
+        String confirmText = placementConfirmed ? " [PLACEMENT CONFIRMED]" : "";
+        return String.format("Application: %s for %s | Status: %s%s", applicant.getName(), internship.getInternshipTitle(), status, confirmText);
+    }
 }
