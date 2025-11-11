@@ -1,28 +1,49 @@
 package src.main.entity;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class Student extends UserAccount {
-    private int yearOfStudy; // add final?
+    private int yearOfStudy;
     private String major;
+    private boolean hasAcceptedPlacement;
 
-    public Student(int yearOfStudy, String major) {
+    public Student(String UserID, String name, String password, int yearOfStudy, String major) {
+        super(userID, name, password);  // userID might need to be changed to protected
         this.yearOfStudy = yearOfStudy;
+        this.major = major;
+        this.hasAcceptedPlacement = false;
+    }
+
+    public int getYearOfStudy() {
+        return yearOfStudy;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public boolean hasAcceptedPlacement() {
+        return hasAcceptedPlacement;
+    }
+
+    public void setYearOfStudy(int yearOfStudy) {
+        this.yearOfStudy = yearOfStudy;
+    }
+
+    public void setMajor(String major) {
         this.major = major;
     }
 
-    public void viewInternship(filters) 
+    public void setHasAcceptedPlacement(boolean hasAccepted) {
+        this.hasAcceptedPlacement = hasAccepted;
+    }
 
-    public void apply(op: InternshipOpportunity)
-    
+    public String getRole() {
+        return "STUDENT";
+    }
 
-    public void viewStatus()
-
-    public void acceptInternship(app: InternApplication)
-
-    public void requestWithdrawal(app: InternApplication)
-
-    
-    
+    public boolean isEligibleForLevel(InternshipLevel level) {
+        if (yearOfStudy <= 2) {
+            return level == InternshipLevel.BASIC;
+        }
+        return true;
+    }
 }
