@@ -1,27 +1,27 @@
 package src.main.entity;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class Student extends UserAccount {
-    private int yearOfStudy; // add final?
+
+    private int yearOfStudy;
     private String major;
 
-    public Student(int yearOfStudy, String major) {
+    public Student(String userId, String name, String password, int yearOfStudy, String major) {
+        super(userId, name, password);
         this.yearOfStudy = yearOfStudy;
         this.major = major;
     }
 
-    public void viewInternship(filters) 
+    public int getYearOfStudy() {
+        return yearOfStudy;
 
-    public void apply(op: InternshipOpportunity)
+    public String getMajor() {
+        return major;
+
     
 
-    public void viewStatus()
 
-    public void acceptInternship(app: InternApplication)
-
-    public void requestWithdrawal(app: InternApplication)
 
     
     
