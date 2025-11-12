@@ -6,4 +6,5 @@ public enum ApplicationStatus {
     UNSUCCESSFUL,
     WITHDRAWN,
     CONFIRMED
+    venus
 }
