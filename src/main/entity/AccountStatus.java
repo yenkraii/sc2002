@@ -1,7 +1,9 @@
 package src.main.entity;
 
-enum AccountStatus {
-    PendingApproval(),
-    Active(),
-    Suspended(),
+// enumeration for account status
+public enum AccountStatus {
+    PENDING_APPROVAL,
+    APPROVED,
+    REJECTED,
+    SUSPENDED
 }

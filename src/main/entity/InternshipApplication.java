@@ -2,13 +2,17 @@ package src.main.entity;
 
 import java.time.LocalDate;
 
+// represents student's application for an internship
 public class InternshipApplication{
     private ApplicationStatus status;
     private Student applicant;
     private InternshipOpportunity internship;
     private LocalDate applicationDate;
-    private boolean placementConfirmed;
+    private boolean placementConfirmed; // track if student accepted placement
 
+    // constructor for InternshipApplication
+    // param applicant: student applying
+    // param internship: internship being applied to
     public InternshipApplication(Student applicant, InternshipOpportunity internship) {
         this.status = ApplicationStatus.PENDING;
         this.applicant = applicant;
@@ -17,6 +21,7 @@ public class InternshipApplication{
         this.placementConfirmed = false;
     }
 
+    // getters & setters
     public ApplicationStatus getStatus() {
         return status;
     }
@@ -48,10 +53,12 @@ public class InternshipApplication{
         }
     }
 
+    // withdraw application
     public void withdraw() {
         this.status = ApplicationStatus.WITHDRAWN;
     }
 
+    // override
     public String toString() {
         String confirmText = placementConfirmed ? " [PLACEMENT CONFIRMED]" : "";
         return String.format("Application: %s for %s | Status: %s%s", applicant.getName(), internship.getInternshipTitle(), status, confirmText);

@@ -1,45 +1,81 @@
 package src.main.entity;
 
+// abstract base class for all user accounts in system
+// demonstrates encapsulation & abstraction principles
 
-public class UserAccount {
-    private String userID;
-    private String name;
-    private String password;
-    private AccountStatus status;
+public abstract class UserAccount {
+    protected String userID;
+    protected String name;
+    protected String password;
+    protected AccountStatus status;
 
-    // 
-    UserAccount(String id, String userName){
-        userID = id;
-        name = userName;
-        password = "password"; // default
-        status = AccountStatus.PendingApproval;
+    // constructor for UserAccount
+    // param userID: unique identifier for user
+    // param name: full name of user
+    // param password: user's password
+    public UserAccount(String userID, String name, String password) {
+        this.userID = userID;
+        this.name = name;
+        this.password = password;
+        this.status = AccountStatus.APPROVED;
     }
 
-    public boolean checkPasswordMatch(String enteredPassword){
-        return (password == enteredPassword) ? true : false;
-    }
-    
-    public boolean changePassword(String toChange){
-        if (checkPasswordMatch(toChange)) return false;
-        password = toChange;
-        return true;
+    // getters & setters (encapsulation)
+    public String getUserID() {
+        return userID;
     }
 
-    public boolean changeStatus(AccountStatus newStatus){
-        if(newStatus == status) return false;
-        newStatus = status;
-        return true;
+    public String getName() {
+        return name;
     }
 
-    // override instead creating new methods
-    @Override
-    public String toString(){
-        return this.userID + ", " + this.name;
+    public String getPassword() {
+        return password;
     }
 
-    @Override
-    public boolean equals(Object toCompare){
-        UserAccount other = (UserAccount) toCompare;
-        return (this.userID == other.userID) ? true : false;
+    public AccountStatus getStatus() {
+        return status;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
+    }
+
+
+    // login validation - template method pattern
+    // param inputPassword: password to validate
+    // return true if login successful
+    public boolean login(String inputPassword) {
+        return this.password.equals(inputPassword) && this.status == AccountStatus.APPROVED;
+    }
+
+    // log out operation
+    public void logout() {
+        System.out.println(name + "logged out successfully.");
+    }
+
+    // change password functionality
+    // param oldPassword: current password
+    // param newPassword: new password to set
+    // return true if password changed successfully
+    public boolean changePassword(String oldPassword, String newPassword) {
+        if (this.password.equals(oldPassword)) {
+            this.password = newPassword;
+            return true;
+        }
+        return false
+    }
+
+    // abstract method for getting user role (polymorphism)
+    // return String representation of user role
+    public abstract String getRole();
+
 }
