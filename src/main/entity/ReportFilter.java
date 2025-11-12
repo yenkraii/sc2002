@@ -69,7 +69,9 @@ public class ReportFilter {
       return false;
     if (level!= null && opp.getInternshipLevel()!= level)
       return false;
-    if (companyName!= null && !opp.getApplicationClosingDate().equals(closingDate))
+    if (companyName!= null && !opp.getCompanyName().equals(companyName))
+      return false;
+    if (closingDate!= null && !opp.getApplicationClosingDate().equals(closingDate))
       return false;
     return true;
   }
