@@ -1,5 +1,4 @@
-package src.main.control;
+package src.repo;
 
 public class DefaultEligibilityPolicy {
-    
 }

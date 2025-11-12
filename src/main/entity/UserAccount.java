@@ -1,11 +1,5 @@
 package src.main.entity;
 
-enum AccountStatus{
-    PendingApproval(),
-    Active(),
-    Suspended(),
-}
-
 
 public class UserAccount {
     private String userID;
