@@ -10,7 +10,7 @@ public class CompanyRep extends UserAccount {
         this.companyName = companyName;
         this.department = department; 
         this.position = position; 
-        this.status = AccountStatus.PENDING_APPROVAL 
+        this.status = AccountStatus.PENDING_APPROVAL; 
     }
 
     public String getCompanyName(){

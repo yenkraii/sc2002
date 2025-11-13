@@ -1,8 +1,9 @@
 package src.main.entity;
 
+
 // Student entity class
 // extends UserAccount to inherit common properties
-public class Student extends UserAccount {
+public class Student extends UserAccount{
     private int yearOfStudy;
     private String major;
     private boolean hasAcceptedPlacement;
@@ -14,7 +15,7 @@ public class Student extends UserAccount {
     // param yearOfStudy: year of study (1-4)
     // param major: student major
     public Student(String UserID, String name, String password, int yearOfStudy, String major) {
-        super(userID, name, password);  // userID might need to be changed to protected
+        super(UserID, name, password);  // userID might need to be changed to protected
         this.yearOfStudy = yearOfStudy;
         this.major = major;
         this.hasAcceptedPlacement = false;

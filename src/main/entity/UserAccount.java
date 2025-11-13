@@ -71,7 +71,7 @@ public abstract class UserAccount {
             this.password = newPassword;
             return true;
         }
-        return false
+        return false;
     }
 
     // abstract method for getting user role (polymorphism)
