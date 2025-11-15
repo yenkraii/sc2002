@@ -16,6 +16,7 @@ public class CenterStaff extends UserAccount {
         this.staffDepartment = staffDepartment;
     }
 
+    @Override
     public String getRole(){
         return "CENTER_STAFF";
     }

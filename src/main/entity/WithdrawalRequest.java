@@ -2,6 +2,8 @@ package src.main.entity;
 
 import java.time.LocalDate;
 
+import src.main.entity.WithdrawalStatus;
+
 // represents student's request to withdraw from an internship
 // requires center staff approval
 public class WithdrawalRequest {
@@ -10,6 +12,7 @@ public class WithdrawalRequest {
     private LocalDate requestDate;
     private String reason;
     private boolean isAfterConfirmation;
+    private WithdrawalStatus status;
 
     // constructor for WithdrawalRequest
     public WithdrawalRequest(InternshipApplication application, Student student, String reason) {

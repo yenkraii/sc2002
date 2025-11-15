@@ -1,5 +1,7 @@
 package src.main.entity;
 
+import java.time.LocalDate;
+
 public class InternshipOpportunity {
     private static int nextID = 1;
 
@@ -50,7 +52,7 @@ public class InternshipOpportunity {
     }
 
     public String getPreferredMajor(){
-        return preferredMajor 
+        return preferredMajor;
     }
 
     public LocalDate getApplicationOpeningDate(){

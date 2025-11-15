@@ -66,12 +66,13 @@ public abstract class UserAccount {
     // param oldPassword: current password
     // param newPassword: new password to set
     // return true if password changed successfully
-    public boolean changePassword(String oldPassword, String newPassword) {
-        if (this.password.equals(oldPassword)) {
-            this.password = newPassword;
-            return true;
+    public boolean changePassword(String newPass) {
+        if (this.password.equals(newPass)) {
+            return false;    
         }
-        return false;
+        this.password = newPass;
+        return true;
+        
     }
 
     // abstract method for getting user role (polymorphism)

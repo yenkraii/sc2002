@@ -1,6 +1,9 @@
 package src.main.entity;
 
 // Filter criteria for generating reports 
+
+import java.time.LocalDate;
+
 public class ReportFilter {
   private InternshipStatus status;
   private String major; 
