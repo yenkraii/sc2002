@@ -1,4 +1,6 @@
 package src.repo.in_memory;
 
-public class InMemoryWIthdrawalRequestRepository {
+public class InMemoryWithdrawalRequestRepository implements IRepository{
+    
+
 }

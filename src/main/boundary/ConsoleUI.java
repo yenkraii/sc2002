@@ -1,19 +1,20 @@
 package src.main.boundary;
 
 import src.main.control.*;
+import src.repo.in_memory.InMemoryUserRepository;
 
 // should only be interacting with control classes
 // boundary class of ConsoleUI cannot directly interact with entity classes
 
 public class ConsoleUI implements IHandleIO{
 
-    private static AuthController authController;
+    private static IPMSApplication mainSystem;
 
-    ConsoleUI(AuthController ac){
-        authController = ac;
+    ConsoleUI(){
+        mainSystem = new IPMSApplication();
     }
     
-    public void start(String[] args) {
+    public void start() {
         int chosenOpt = -1;
         do{
             // menu traversal

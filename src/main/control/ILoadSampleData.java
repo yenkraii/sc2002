@@ -3,12 +3,14 @@ package src.main.control;
 import src.main.control.*;
 import src.main.entity.*;
 import src.repo.*;
+import java.time.*;
 
 public interface ILoadSampleData {
 
     static IRepository userRepository = null;
     static IRepository opportunityRepository = null;
     static IRepository applicationRepository = null;
+    final String DEFAULT_PASSWORD = "password";
     
     /**
      * Create sample company representatives for testing
@@ -37,7 +39,7 @@ public interface ILoadSampleData {
      * Create sample internship opportunities for testing
      * Allows students to test the system immediately
      */
-    default private void loadSampleOpportunities() {
+    default public void loadSampleOpportunities() {
         System.out.println("\nCreating sample internship opportunities for testing...");
         
         LocalDate today = LocalDate.now();
