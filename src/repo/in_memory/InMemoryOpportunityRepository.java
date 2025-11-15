@@ -1,5 +1,7 @@
 package src.repo.in_memory;
 
-public class InMemoryOpportunityRepository {
+import src.repo.IRepository;
+
+public class InMemoryOpportunityRepository implements IRepository{
     
 }

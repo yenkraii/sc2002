@@ -38,7 +38,7 @@ public class OpportunityController {
     // param closeDate: closing date
     // param slots: number of slots
     // return created opportunity or null if failed
-    publc InternshipOpportuntity createOpportunity(CompanyRep companyRep, String title, String description, InternshipLevel level, String major, LocalDate openDate, LocalDate closeDate, int slots) {
+    public InternshipOpportuntity createOpportunity(CompanyRep companyRep, String title, String description, InternshipLevel level, String major, LocalDate openDate, LocalDate closeDate, int slots) {
         // check if rep has reached max opportunities
         List<InternshipOpportunity> existingOpps = opportunityRepository.findByCompanyRep(companyRep.getUserID());
 

@@ -1,5 +1,7 @@
 package src.repo.in_memory;
 
-public class InMemoryApplicationRepository {
+import src.repo.IRepository;
+
+public class InMemoryApplicationRepository implements IRepository {
     
 }
