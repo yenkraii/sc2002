@@ -10,5 +10,7 @@ abstract interface IMainRepository {
 
     public void  loadStudents(String filename);
 
+    public String[] processLine(String line);
+
 
 }
