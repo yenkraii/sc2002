@@ -11,7 +11,7 @@ public interface IHandleIO {
         for(int i = 0; i < optionsToShow.length; i++){
             System.out.printf("%d : %s \n", i+1, optionsToShow[i]);
         }
-        System.out.println("x : Exit System");
+        System.out.println("x : Back / Exit");
         System.out.println(new String(new char[20]).replace("\0", "-"));
     }
 
@@ -34,4 +34,18 @@ public interface IHandleIO {
             consoleScanner.nextLine();
         }
     }
+
+    default public String[] getStringArrayInput(String[] fields){
+        consoleScanner.nextLine();
+        int noFieldsExpected = fields.length;
+        if (noFieldsExpected < 1) return null;
+        System.out.println("Please key in " + noFieldsExpected + " entries.");
+        String[] userInput = new String[noFieldsExpected];
+        for(int i = 0; i < noFieldsExpected; i ++){
+            System.out.printf("%s: ", fields[i]);
+            userInput[i] = consoleScanner.nextLine().trim();
+        }
+        return userInput;
+    }
+
 }

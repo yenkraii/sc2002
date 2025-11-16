@@ -41,7 +41,7 @@ public class AuthController implements IEditLoadedData{
     // get current logged in user
     // return current user account
     public UserAccount getCurrrentUser(){
-        return currentUser;
+        return this.currentUser;
     }
 
     public UserAccount read(String id) {

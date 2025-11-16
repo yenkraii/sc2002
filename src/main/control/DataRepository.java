@@ -12,9 +12,7 @@ public class DataRepository implements IMainRepository {
     protected Map<String,InternshipApplication> appRepo;
     protected Map<String,WithdrawalRequest> wdrRepo;
     protected Map<String,String> pwdRepo;
-    
-    // Default password for all users loaded from CSV
-    private static final String DEFAULT_PASSWORD = "password";
+
 
     public DataRepository(){
         this.userRepo = new HashMap<String,UserAccount>();
@@ -28,10 +26,12 @@ public class DataRepository implements IMainRepository {
         System.out.println("Loading initial data from CSV files...");
         
         // Load from CSV files
+        loadUserAuth("data/password_list.csv");
+
         loadStudents("data/student_list.csv");
         loadCareerStaff("data/staff_list.csv");
         loadCompanyReps("data/company_representative_list.csv");
-        loadUserAuth("data/password_list.csv");
+        
         // Optionally create sample opportunities for testing
         //loadSampleOpportunities();
         
@@ -59,15 +59,14 @@ public class DataRepository implements IMainRepository {
                 line = line.trim();
                 
                 if (line.isEmpty()) continue;
-                
                 String[] inputInfo = processLine(line);
                 userRepo.put(inputInfo[0],new Student(inputInfo[0], 
                                                 inputInfo[1], 
-                                                DEFAULT_PASSWORD, 
-                                                Integer.parseInt(inputInfo[2]),
-                                                inputInfo[3]));
+                                                pwdRepo.get(inputInfo[0]), 
+                                                Integer.parseInt(inputInfo[3]),
+                                                inputInfo[2]));
                 count++;
-
+                
             }
             
             reader.close();
@@ -106,7 +105,7 @@ public class DataRepository implements IMainRepository {
                 String[] inputInfo = processLine(line);
                 userRepo.put(inputInfo[0],new CenterStaff(inputInfo[0], 
                                                 inputInfo[1], 
-                                                DEFAULT_PASSWORD, 
+                                                pwdRepo.get(inputInfo[0]), 
                                                 inputInfo[2]));
                 count++;
 
@@ -148,7 +147,7 @@ public class DataRepository implements IMainRepository {
                 String[] inputInfo = processLine(line);
                 userRepo.put(inputInfo[0],new CompanyRep(inputInfo[0], 
                                                 inputInfo[1], 
-                                                DEFAULT_PASSWORD, 
+                                                pwdRepo.get(inputInfo[0]), 
                                                 inputInfo[2], 
                                                 inputInfo[3], 
                                                 inputInfo[4]));
@@ -210,7 +209,7 @@ public class DataRepository implements IMainRepository {
                 //System.out.println("Creating sample company representatives instead...");
                 //createSampleCompanyReps();
             } else {
-                System.out.println("Successfully loaded " + count + " company representatives");
+                System.out.println("Successfully loaded " + count + " user Auth");
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);

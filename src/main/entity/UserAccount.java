@@ -59,7 +59,7 @@ public abstract class UserAccount {
 
     // log out operation
     public void logout() {
-        System.out.println(name + "logged out successfully.");
+        System.out.println(name + " logged out successfully.");
     }
 
     // change password functionality
