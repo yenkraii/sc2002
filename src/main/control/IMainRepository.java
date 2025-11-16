@@ -14,5 +14,4 @@ abstract interface IMainRepository {
 
     public String[] processLine(String line);
 
-
 }
