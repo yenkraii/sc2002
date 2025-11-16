@@ -2,10 +2,12 @@ package src.main.entity;
 
 public class CenterStaff extends UserAccount {
     private String staffDepartment; 
+    private String role;
 
-    public CenterStaff(String userID, String name, String password, String staffDepartment){
-        super(userID, name, password);
+    public CenterStaff(String userID, String name, String password, String email, String staffDepartment, String role){
+        super(userID, name, password, email);
         this.staffDepartment = staffDepartment;
+        this.role = role;
     }
 
     public String getStaffDepartment(){
@@ -19,5 +21,8 @@ public class CenterStaff extends UserAccount {
     @Override
     public String getRole(){
         return "CENTER_STAFF";
+    }
+    public String[] export(){
+        return new String[] {userID, name, role, staffDepartment, email};
     }
 }

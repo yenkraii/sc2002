@@ -36,7 +36,9 @@ public class MenuTraversal implements IHandleIO{
             } else {
 
                 if(chosenOpt == -1){ // declared intention to logged off already
-                    mainSystem.logout(); continue;
+                    mainSystem.logout(); 
+                    System.out.println("Logged out successfully!");
+                    continue;
                 }
 
                 switch (mainSystem.accountRole()) {
@@ -55,8 +57,7 @@ public class MenuTraversal implements IHandleIO{
 
 
 
-
-
+        mainSystem.shutdown();
         consoleScanner.close();
         System.out.println("InternSys exited!");
     }

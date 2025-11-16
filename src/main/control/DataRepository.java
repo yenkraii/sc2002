@@ -31,47 +31,50 @@ public class DataRepository implements IMainRepository {
         loadStudents("data/student_list.csv");
         loadCareerStaff("data/staff_list.csv");
         loadCompanyReps("data/company_representative_list.csv");
+
+        loadInternApp("data/intern_app_list.csv");
+        loadInternOpp("data/intern_opp_list.csv");
         
         // Optionally create sample opportunities for testing
         //loadSampleOpportunities();
         
         System.out.println("Data loading complete!");
     }
+
+    public void saveFinalData(){
+        saveUserAuth("data/password_list.csv");
+
+        saveUsers("data/staff_list.csv", 
+                "data/company_representative_list.csv",
+                "data/student_list.csv");
+        
+        saveInternApp("data/intern_app_list.csv");
+        saveInternOpp("data/intern_opp_list.csv");
+    }
+
     
     public void loadStudents(String filename) {
-        System.out.println("\nLoading students from: " + filename);
-        
         try {
             File file = new File(filename);
             if (!file.exists()) {
-                System.out.println("File not found: " + filename);
-                System.out.println("Please ensure the CSV file is in the 'data' folder");
                 return;
             }
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
-                        String line;
-            int count = 0;
-            
+            String line;
             reader.readLine(); // automatically skip first header row
-
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                
                 if (line.isEmpty()) continue;
                 String[] inputInfo = processLine(line);
                 userRepo.put(inputInfo[0],new Student(inputInfo[0], 
                                                 inputInfo[1], 
-                                                pwdRepo.get(inputInfo[0]), 
+                                                pwdRepo.get(inputInfo[0]),
+                                                inputInfo[2],
                                                 Integer.parseInt(inputInfo[3]),
-                                                inputInfo[2]));
-                count++;
-                
+                                                inputInfo[4]));
             }
-            
             reader.close();
-            System.out.println("Successfully loaded " + count + " students");
-            
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);
             System.err.println("Please check the file path and try again");
@@ -81,22 +84,15 @@ public class DataRepository implements IMainRepository {
     }
     
     public void loadCareerStaff(String filename) {
-        System.out.println("\nLoading career staff from: " + filename);
-        
         try {
             File file = new File(filename);
             if (!file.exists()) {
-                System.out.println("File not found: " + filename);
-                System.out.println("Please ensure the CSV file is in the 'data' folder");
                 return;
             }
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            int count = 0;
-            
             reader.readLine(); // automatically skip first header row
-
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 
@@ -106,14 +102,11 @@ public class DataRepository implements IMainRepository {
                 userRepo.put(inputInfo[0],new CenterStaff(inputInfo[0], 
                                                 inputInfo[1], 
                                                 pwdRepo.get(inputInfo[0]), 
-                                                inputInfo[2]));
-                count++;
-
+                                                inputInfo[2],
+                                                inputInfo[3],
+                                                inputInfo[4]));
             }
-            
             reader.close();
-            System.out.println("Successfully loaded " + count + " staff members");
-            
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);
         } catch (IOException e) {
@@ -122,75 +115,45 @@ public class DataRepository implements IMainRepository {
     }
     
     public void loadCompanyReps(String filename) {
-        System.out.println("\nLoading company representatives from: " + filename);
-        
         try {
             File file = new File(filename);
             if (!file.exists()) {
-                System.out.println("File not found: " + filename);
-                //System.out.println("Creating sample company representatives instead...");
-                //createSampleCompanyReps();
                 return;
             }
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            int count = 0;
-            
             reader.readLine(); // automatically skip first header row
-
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                
                 if (line.isEmpty()) continue;
-                
                 String[] inputInfo = processLine(line);
                 userRepo.put(inputInfo[0],new CompanyRep(inputInfo[0], 
                                                 inputInfo[1], 
                                                 pwdRepo.get(inputInfo[0]), 
                                                 inputInfo[2], 
                                                 inputInfo[3], 
-                                                inputInfo[4]));
-                count++;
-
+                                                inputInfo[4],
+                                                inputInfo[5],
+                                                inputInfo[6]));
             }
-            
             reader.close();
-            
-            if (count == 0) {
-                System.out.println("No company representatives found in CSV");
-                //System.out.println("Creating sample company representatives instead...");
-                //createSampleCompanyReps();
-            } else {
-                System.out.println("Successfully loaded " + count + " company representatives");
-            }
-            
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);
-            //createSampleCompanyReps();
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
 
     public void loadUserAuth(String filename){
-        System.out.println("\nLoading user authentication info.: " + filename);
-        
         try {
             File file = new File(filename);
             if (!file.exists()) {
-                System.out.println("File not found: " + filename);
-                //System.out.println("Creating sample company representatives instead...");
-                //createSampleCompanyReps();
                 return;
             }
-            
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            int count = 0;
-            
             reader.readLine(); // automatically skip first header row
-
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 
@@ -198,22 +161,11 @@ public class DataRepository implements IMainRepository {
                 
                 String[] inputInfo = processLine(line);
                 pwdRepo.put(inputInfo[0], inputInfo[1]);
-                count++;
 
             }
-            
             reader.close();
-            
-            if (count == 0) {
-                System.out.println("No user Auth found in CSV");
-                //System.out.println("Creating sample company representatives instead...");
-                //createSampleCompanyReps();
-            } else {
-                System.out.println("Successfully loaded " + count + " user Auth");
-            }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);
-            //createSampleCompanyReps();
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
@@ -221,12 +173,63 @@ public class DataRepository implements IMainRepository {
 
     public String[] processLine(String line){
         String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-        
         for (int i = 0; i < parts.length; i++) {
             parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
         }
-
         return parts;
+    }
+
+    public void saveUserAuth(String filename){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+            bw.write("userId,password\n");
+            for(String userId : userRepo.keySet()){
+                bw.write(userId + "," + pwdRepo.get(userId)+"\n");
+            }
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void saveUsers(String staffFile, String companyFile, String studentFile){
+        try{
+            BufferedWriter staffBW = new BufferedWriter(new FileWriter(staffFile));
+            BufferedWriter companyBW = new BufferedWriter(new FileWriter(companyFile));
+            BufferedWriter studentBW = new BufferedWriter(new FileWriter(studentFile));
+
+            staffBW.write("StaffID,Name,Role,Department,Email\n");
+            companyBW.write("CompanyRepID,Name,CompanyName,Department,Position,Email,Status\n");
+            studentBW.write("StudentID,Name,Major,Year,Email\n");
+            
+            for(UserAccount user : userRepo.values()){
+                switch(user.getRole()){
+                    case "STUDENT": 
+                        studentBW.write(String.join(",",user.export()) + "\n"); break;
+                    case "CENTER_STAFF": 
+                        staffBW.write(String.join(",",user.export()) + "\n"); break;
+                    case "COMPANY_REP":
+                        companyBW.write(String.join(",",user.export()) + "\n"); break;
+                    default: break;
+                }
+            }
+
+            staffBW.close();companyBW.close();studentBW.close();
+
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void saveInternOpp(String filename){
+        
+    }
+    public void saveInternApp(String filename){
+        
+    }
+
+    public void loadInternApp(String filename){
+
+    }
+
+    public void loadInternOpp(String filename){
+
     }
 
 

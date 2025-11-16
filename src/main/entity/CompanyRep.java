@@ -5,12 +5,20 @@ public class CompanyRep extends UserAccount {
     private String department;
     private String position;
 
-    public CompanyRep(String userID, String name, String password, String companyName, String department, String position){
-        super(userID, name, password);
+    public CompanyRep(String userID, String name, String password, String email, String companyName, String department, String position){
+        super(userID, name, password, email);
         this.companyName = companyName;
         this.department = department; 
         this.position = position; 
         this.status = AccountStatus.PENDING_APPROVAL; 
+    }
+
+    public CompanyRep(String userID, String name, String password, String email, String companyName, String department, String position, String status){
+        super(userID, name, password, email);
+        this.companyName = companyName;
+        this.department = department; 
+        this.position = position; 
+        this.status = AccountStatus.valueOf(status); 
     }
 
     public String getCompanyName(){
@@ -40,4 +48,9 @@ public class CompanyRep extends UserAccount {
     public String getRole(){
         return "COMPANY_REP";
     }    
+
+    public String[] export(){
+        return new String[] {userID, name, companyName, department,position, email, String.valueOf(status)};
+    }
+
 }

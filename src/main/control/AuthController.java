@@ -33,7 +33,7 @@ public class AuthController implements IEditLoadedData{
             return false; // user already exists
         }
 
-        CompanyRep newRep = new CompanyRep(key, infoToMap[1], infoToMap[2], infoToMap[3], infoToMap[4], infoToMap[5]);
+        CompanyRep newRep = new CompanyRep(key, infoToMap[1], infoToMap[2], infoToMap[3], infoToMap[4], infoToMap[5], infoToMap[6]);
         userRepo.put(key, newRep);
         return true;
     }
@@ -92,7 +92,6 @@ public class AuthController implements IEditLoadedData{
     // log out current user
     public void logout() {
         if (this.currentUser != null) {
-            this.currentUser.logout();
             this.currentUser = null;
         }
     }

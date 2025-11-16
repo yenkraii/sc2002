@@ -1,6 +1,5 @@
 package src.main.entity;
 
-
 // Student entity class
 // extends UserAccount to inherit common properties
 public class Student extends UserAccount{
@@ -14,8 +13,8 @@ public class Student extends UserAccount{
     // param password: student password
     // param yearOfStudy: year of study (1-4)
     // param major: student major
-    public Student(String UserID, String name, String password, int yearOfStudy, String major) {
-        super(UserID, name, password);  // userID might need to be changed to protected
+    public Student(String UserID, String name, String password, String email, int yearOfStudy, String major) {
+        super(UserID, name, password, email);  // userID might need to be changed to protected
         this.yearOfStudy = yearOfStudy;
         this.major = major;
         this.hasAcceptedPlacement = false;
@@ -60,4 +59,9 @@ public class Student extends UserAccount{
         }
         return true; // year 3+ can apply for any level
     }
+
+    public String[] export(){
+        return new String[] {userID, name, major, String.valueOf(yearOfStudy), email};
+    }
+
 }

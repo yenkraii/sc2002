@@ -8,15 +8,17 @@ public abstract class UserAccount {
     protected String name;
     protected String password;
     protected AccountStatus status;
+    protected String email;
 
     // constructor for UserAccount
     // param userID: unique identifier for user
     // param name: full name of user
     // param password: user's password
-    public UserAccount(String userID, String name, String password) {
+    public UserAccount(String userID, String name, String password, String email) {
         this.userID = userID;
         this.name = name;
         this.password = password;
+        this.email = email;
         this.status = AccountStatus.APPROVED;
     }
 
@@ -57,11 +59,6 @@ public abstract class UserAccount {
         return this.password.equals(inputPassword) && this.status == AccountStatus.APPROVED;
     }
 
-    // log out operation
-    public void logout() {
-        System.out.println(name + " logged out successfully.");
-    }
-
     // change password functionality
     // param oldPassword: current password
     // param newPassword: new password to set
@@ -74,6 +71,8 @@ public abstract class UserAccount {
         return true;
         
     }
+
+    public abstract String[] export();
 
     // abstract method for getting user role (polymorphism)
     // return String representation of user role

@@ -23,6 +23,10 @@ public class IPMSApplication implements IMenuActions {
       systemStorage.loadInitialData();
     }
 
+    public void shutdown(){
+      systemStorage.saveFinalData();
+    }
+
     public boolean isLoggedOn(){
       AuthController ac = (AuthController) usrControl;
       return (!Objects.isNull(ac.getCurrrentUser()));
