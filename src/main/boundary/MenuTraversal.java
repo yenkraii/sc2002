@@ -25,13 +25,13 @@ public class MenuTraversal implements IHandleIO{
                 displayMenu(new String[] {"Login"});
                 chosenOpt = getMenuInput(1);
                 if(chosenOpt == -1) break;
-                if(!mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"}))){
+                if(!mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"}))){ 
                     // didn't log in correctly
                     System.out.println("Wrong userID or Password! Try again.");
                     continue;
                 }
                 
-                System.out.println("Sucessfully logged in!\n\n");
+                System.out.println("\nSucessfully logged in!\n\n");
 
             } else {
 
@@ -63,7 +63,7 @@ public class MenuTraversal implements IHandleIO{
     
     public int studentMenu(){
         final String[] lvl1StudentChoices = new String[] 
-            {"View Intern Listing", "View Applications", "Export All"};
+            {"View Intern Listing", "View Applications", "Export All", "Change Password"};
         
         final String[] lvl2StudentChoices = new String[] 
             {"Select", "Back"};
@@ -79,6 +79,10 @@ public class MenuTraversal implements IHandleIO{
             case 3:
                 // export all
                 break;
+            case 4:
+                // change password
+                mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
+                return -1;
             case -1:
                 // log out
                 return -1;
@@ -88,7 +92,7 @@ public class MenuTraversal implements IHandleIO{
 
     public int companyMenu(){
         final String[] lvl1CompanyChoices = new String[] 
-            {"View Intern Posting", "View Applications", "Export All"};
+            {"View Intern Posting", "View Applications", "Export All", "Change Password"};
         
         final String[] lvl2CompanyChoices = new String[] 
             {"Select", "Back"};
@@ -104,6 +108,10 @@ public class MenuTraversal implements IHandleIO{
             case 3:
                 // export all
                 break;
+            case 4:
+                // change password
+                mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
+                return -1;
             case -1:
                 // log out
                 return -1;
@@ -113,7 +121,7 @@ public class MenuTraversal implements IHandleIO{
     
     public int staffMenu(){
         final String[] lvl1StaffChoices = new String[] 
-            {"View Opportunities", "View Accounts", "Export All"};
+            {"View Opportunities", "View Accounts", "Export All", "Change Password"};
         
         final String[] lvl2StaffChoices = new String[] 
             {"Select", "Back"};
@@ -129,6 +137,10 @@ public class MenuTraversal implements IHandleIO{
             case 3:
                 // export all
                 break;
+            case 4:
+                // change password
+                mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
+                return -1;
             case -1:
                 // log out
                 return -1;
