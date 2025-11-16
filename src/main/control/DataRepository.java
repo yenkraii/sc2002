@@ -3,13 +3,14 @@ package src.main.control;
 import src.main.entity.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataRepository implements IMainRepository {
     protected Map<String,UserAccount> userRepo;
     protected Map<String,InternshipOpportunity> oppRepo;
-    protected Map<String,InternshipApplication> appRepo;
+    protected Map<String,ArrayList<InternshipApplication>> appRepo;
     protected Map<String,WithdrawalRequest> wdrRepo;
     protected Map<String,String> pwdRepo;
 
@@ -17,7 +18,7 @@ public class DataRepository implements IMainRepository {
     public DataRepository(){
         this.userRepo = new HashMap<String,UserAccount>();
         this.oppRepo = new HashMap<String,InternshipOpportunity>();
-        this.appRepo = new HashMap<String,InternshipApplication>();
+        this.appRepo = new HashMap<String,ArrayList<InternshipApplication>>();
         this.wdrRepo = new HashMap<String,WithdrawalRequest>();
         this.pwdRepo = new HashMap<String,String>();
     }
@@ -119,8 +120,7 @@ public class DataRepository implements IMainRepository {
             File file = new File(filename);
             if (!file.exists()) {
                 return;
-            }
-            
+            }   
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             reader.readLine(); // automatically skip first header row
@@ -218,19 +218,90 @@ public class DataRepository implements IMainRepository {
         }
     }
     public void saveInternOpp(String filename){
-        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+            bw.write("title,description,level,major,openingDate,closingDate,companyName,repId,slots\n");
+            for(InternshipOpportunity opp : oppRepo.values()){
+                bw.write(String.join(",",opp.export()) + "\n");
+            }
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
     }
     public void saveInternApp(String filename){
-        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+            bw.write("studentId,oppId\n");
+            for(ArrayList<InternshipApplication> appLs : appRepo.values()){
+                for(InternshipApplication app: appLs)
+                    bw.write(String.join(",",app.export()) + "\n");
+            }
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public void loadInternApp(String filename){
+        try {
+            File file = new File(filename);
+            if (!file.exists()) {
+                return;
+            }   
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            reader.readLine(); // automatically skip first header row
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                String[] inputInfo = processLine(line);
+                Student applicant = (Student)userRepo.get(inputInfo[0]);
+                InternshipApplication app = new InternshipApplication(applicant, oppRepo.get(inputInfo[1]));
 
+                if(appRepo.containsKey(inputInfo[0])){
+                    ArrayList<InternshipApplication> temp = appRepo.get(inputInfo[0]);
+                    temp.add(app);
+                    appRepo.put(applicant.getUserID(), temp);
+                }else{
+                    ArrayList<InternshipApplication> temp = new ArrayList<>();
+                    temp.add(app);
+                    appRepo.put(applicant.getUserID(), temp);
+                }
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + filename);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     public void loadInternOpp(String filename){
-
+        try {
+            File file = new File(filename);
+            if (!file.exists()) {
+                return;
+            }   
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            reader.readLine(); // automatically skip first header row
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+                String[] inputInfo = processLine(line);
+                InternshipOpportunity opp = new InternshipOpportunity(inputInfo[0], 
+                                                    inputInfo[1], 
+                                                    inputInfo[2], 
+                                                    inputInfo[3], 
+                                                    inputInfo[4],
+                                                    inputInfo[5],
+                                                    inputInfo[6],
+                                                    inputInfo[7],
+                                                    inputInfo[8]);
+                oppRepo.put(opp.getInternshipID(), opp);
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + filename);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
-
-
 }

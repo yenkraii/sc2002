@@ -63,4 +63,8 @@ public class InternshipApplication{
         String confirmText = placementConfirmed ? " [PLACEMENT CONFIRMED]" : "";
         return String.format("Application: %s for %s | Status: %s%s", applicant.getName(), internship.getInternshipTitle(), status, confirmText);
     }
+
+    public String[] export(){
+        return new String[] {applicant.userID, internship.getInternshipID()};
+    }
 }

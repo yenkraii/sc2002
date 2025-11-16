@@ -78,4 +78,9 @@ public abstract class UserAccount {
     // return String representation of user role
     public abstract String getRole();
 
+    @Override
+    public String toString(){
+        return userID;
+    }
+
 }

@@ -35,6 +35,23 @@ public class InternshipOpportunity {
         this.visibility = false;
     }
 
+    public InternshipOpportunity(String internshipTitle, String description, String internshipLevel, String preferredMajor, String applicationOpeningDate, String applicationClosingDate, String companyName, String companyRepInCharge, String numberOfSlots){
+        this.internshipID = "INT" + String.format("%05d",nextID++);
+        this.internshipTitle = internshipTitle;
+        this.description = description;
+        this.internshipLevel = InternshipLevel.valueOf(internshipLevel);
+        this.preferredMajor = preferredMajor;
+        this.applicationOpeningDate = LocalDate.parse(applicationOpeningDate);
+        this.applicationClosingDate = LocalDate.parse(applicationClosingDate);
+        this.status = InternshipStatus.PENDING;
+        this.companyName = companyName;
+        this.companyRepInCharge = companyRepInCharge;
+        this.numberOfSlots = Integer.parseInt(numberOfSlots);
+        this.slotsConfirmed = 0;
+        this.visibility = false;
+    }
+
+
     public String getInternshipID(){
         return internshipID;
     }
@@ -153,5 +170,10 @@ public class InternshipOpportunity {
     
     public String toString() {
         return String.format("[%s] %s - %s (%s) | Slots: %d/%d | Status: %s | Visible: %s", internshipID, internshipTitle, companyName, internshipLevel, slotsConfirmed, numberOfSlots, status, visibility ? "Yes" : "No");
-    } 
+    }
+
+    public String[] export(){
+        return new String[] {internshipTitle, description, String.valueOf(internshipLevel), preferredMajor, String.valueOf(applicationOpeningDate), String.valueOf(applicationClosingDate), companyName, companyRepInCharge, String.valueOf(numberOfSlots)};
+    }
+
 }
