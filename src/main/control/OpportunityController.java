@@ -68,7 +68,7 @@ public class OpportunityController{
     // param closeDate: new closing date
     // param slots: new number of slots
     // return true if successful
-    public boolean updateOpportunity(String oppID, String repID,
+    public String updateOpportunity(String oppID, String repID,
                                     String title, String description,
                                     InternshipLevel level, String major,
                                     LocalDate openDate, LocalDate closeDate,
@@ -76,17 +76,17 @@ public class OpportunityController{
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
-            return false;
+            return "No access to this opportunity.";
         }
         
         // Can't edit approved opportunities
         if (opp.getStatus() != InternshipStatus.PENDING) {
-            return false;
+            return "Cannot edit approved opportunities";
         }
         
         // Validate
         if (slots < 1 || slots > MAX_SLOTS || closeDate.isBefore(openDate)) {
-            return false;
+            return "Info invalid for opportunity.";
         }
         
         opp.setInternshipTitle(title);
@@ -98,7 +98,7 @@ public class OpportunityController{
         opp.setNumberOfSlots(slots);
         
         oppRepo.put(opp.getInternshipID(), opp);
-        return true;
+        return "Successful update.";
     }
     
 
@@ -106,20 +106,20 @@ public class OpportunityController{
     // param oppID: opportunity ID
     // param: repID: company rep ID
     // return true if successful
-    public boolean deleteOpportunity(String oppID, String repID) {
+    public String deleteOpportunity(String oppID, String repID) {
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
-            return false;
+            return "No access to this opportunity";
         }
         
         // Can't delete if has applications
         if (getNumberOfApplicants(opp) > 1) {
-            return false;
+            return "Cannot delete since there are active applications!";
         }
         
         oppRepo.remove(oppID);
-        return true;
+        return "Deletion sucessful";
     }
 
 
@@ -127,57 +127,54 @@ public class OpportunityController{
     // param student: student requesting opportunities
     // param filter: optional filter
     // return list of eligible opportunitie
-    public boolean toggleVisibility(String oppID, String repID, boolean visible) {
+    public String toggleVisibility(String oppID, String repID, boolean visible) {
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
-            return false;
+            return "Cannot edit!";
         }
         
         opp.setVisibility(visible);
         oppRepo.put(opp.getInternshipID(), opp);
-        return true;
+        return "Vissiblity updated.";
     }
     
 
     // approve opportunity (center staff only)
     // param oppID: opportunity ID
     // return true if successful
-    public boolean approveOpportunity(UserAccount actor,String oppID) {
-        if (!(actor instanceof CompanyRep)) return false;
+    public String approveOpportunity(UserAccount actor,String oppID) {
+        if (!(actor instanceof CompanyRep)) return "Not authorised to edit!";
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
-            return false;
+            return "Cannot edit.";
         }
         
         opp.setStatus(InternshipStatus.APPROVED);
         opp.setVisibility(true); // Auto-enable visibility on approval
         oppRepo.put(opp.getInternshipID(), opp);
-        return true;
+        return "Approved opportunity";
     }
     
 
     // reject opportunity (center staff only)
     // param oppID: opportunity ID
     // return true if successful
-    public boolean rejectOpportunity(UserAccount actor, String oppID) {
-        if (!(actor instanceof CompanyRep)) return false;
+    public String rejectOpportunity(UserAccount actor, String oppID) {
+        if (!(actor instanceof CompanyRep)) return "Not authorised.";
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
-            return false;
+            return "Cannot edit";
         }
         
         opp.setStatus(InternshipStatus.REJECTED);
         oppRepo.put(opp.getInternshipID(), opp);
-        return true;
+        return "Rejected opportunity.";
     }
     
-
-
-
-
+    
     // get visible opportunities for student
     // param student: student requesting opportunities
     // param filter: optional filter

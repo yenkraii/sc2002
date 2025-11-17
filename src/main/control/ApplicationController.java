@@ -21,108 +21,103 @@ public class ApplicationController {
     }
 
     // Apply for internship
-    public boolean applyForInternship(Student student, String internshipID){
+    public String applyForInternship(Student student, String internshipID){
         // Check if student already accepted a placement 
         if (student.hasAcceptedPlacement()){
-            return false;
+            return "Student already has an accepted internship";
         }
 
         // Check max applications 
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
         if (pre_existing.size() >= MAX_APPLICATIONS_PER_STUDENT){
-            return false;
+            return "Max applications reached.";
         }
 
         InternshipOpportunity opp = oppRepo.get(internshipID);
         if (opp == null || !opp.isAcceptingApplications()){
-            return false;
+            return "Opportunity not found/accepting applications.";
         }
 
         // Check eligibility 
         if (!opp.isEligibleStudent(student)){
-            return false;
+            return "Student is not eligible.";
         }
 
         // Check if already applied 
         List <InternshipApplication> existingApps = appRepo.get(student.getUserID());
         boolean alreadyApplied = existingApps.stream().anyMatch(app -> app.getInternship().getInternshipID().equals(internshipID));
         if (alreadyApplied){
-            return false;
+            return "Applied already!";
         }
 
         InternshipApplication app = new InternshipApplication(student, opp);
         pre_existing.add(app);
         appRepo.put(student.getUserID(),pre_existing);
-        return true;
-    }
-
-    // View applications for students (including non visible internships)
-    public List<InternshipApplication> viewStudentApplications(String studentID){
-        return appRepo.get(studentID);
+        return "Application successful.";
     }
 
     // View applications for internship 
-    public List <InternshipApplication> viewInternshipApplications(String internshipID){
+    public List<InternshipApplication> viewInternshipApplications(String internshipID){
         List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).collect(Collectors.toList());
         return all.stream().filter(app -> app.getInternship().getInternshipID() == internshipID).collect(Collectors.toList());
     }
 
     // Approve application (company rep)
-    public boolean approveApplication(InternshipApplication application){
+    public String approveApplication(InternshipApplication application){
         Student student = application.getApplicant();
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
         pre_existing.remove(application);
         
         if (application.getStatus()!=ApplicationStatus.PENDING){
-            return false;
+            return "Application is not available";
         }
 
         // Check if slots available 
         InternshipOpportunity opp = application.getInternship();
         if (opp.getAvailableSlots() <=0){
-            return false;
+            return "Insufficient slots for opportunity";
         }
 
         application.setStatus(ApplicationStatus.SUCCESSFUL);
         
         pre_existing.add(application);
         appRepo.put(student.getUserID(), pre_existing);
-        return true;
+        return "Application approved.";
     }
 
     // Reject application (company rep)
-    public boolean rejectApplication(InternshipApplication application){
+    public String rejectApplication(InternshipApplication application){
         Student student = application.getApplicant();
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
         pre_existing.remove(application);
 
         if (application.getStatus()!= ApplicationStatus.PENDING){
-            return false;
+            return "Cannot reject withdrawn/accepted application!";
         }
 
         application.setStatus(ApplicationStatus.UNSUCCESSFUL);
         pre_existing.add(application);
         appRepo.put(student.getUserID(), pre_existing);
-        return true;
+        return "Rejected successfully";
     }
 
     // Accept placement (student)
-    public boolean acceptPlacement(String studentID, InternshipApplication application) {
+    public String acceptPlacement(String studentID, InternshipApplication application) {
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(studentID);
         pre_existing.remove(application);
         
         if (!application.getApplicant().getUserID().equals(studentID)) {
-            return false;
+            return "Not Student";
         }
 
         if (application.getStatus() != ApplicationStatus.SUCCESSFUL) {
-            return false;
+            return "Application not Sucessfully";
         }
 
         // Check if student already accepted a placement
         Student student = application.getApplicant();
         if (student.hasAcceptedPlacement()) {
-            return false;
+            return "Already accepted";
         }
 
         // Mark placement as confirmed
@@ -149,28 +144,28 @@ public class ApplicationController {
             }
         }
         
-        return true;
+        return "Accepted Opportunity!";
     }
     
     // Request withdrawal (requires staff approval)
-    public boolean requestWithdrawal(String studentID, InternshipApplication application, String reason) {
+    public String requestWithdrawal(String studentID, InternshipApplication application, String reason) {
         if (!application.getApplicant().getUserID().equals(studentID)) {
-            return false;
+            return "Unable to withdraw";
         }
         
         // Create withdrawal request
         WithdrawalRequest request = new WithdrawalRequest(application, application.getApplicant(), reason);
         wdrRepo.add(request);
-        return true;
+        return "Submitted Withdrawal Request";
     }
     
     // Approve withdrawal request (center staff)
-    public boolean approveWithdrawalRequest(WithdrawalRequest request) {
+    public String approveWithdrawalRequest(WithdrawalRequest request) {
         
         wdrRepo.remove(request);
 
         if (request.getStatus() != WithdrawalStatus.PENDING) {
-            return false;
+            return "Cannot edit Withdrawal Request";
         }
         
         // Approve request
@@ -193,19 +188,19 @@ public class ApplicationController {
             student.setHasAcceptedPlacement(false);
         }
         
-        return true;
+        return "Withdrawal Request approved.";
     }
     
     // Reject withdrawal request (center Staff)
-    public boolean rejectWithdrawalRequest(WithdrawalRequest request) {
+    public String rejectWithdrawalRequest(WithdrawalRequest request) {
         wdrRepo.remove(request);
         if (request.getStatus() != WithdrawalStatus.PENDING) {
-            return false;
+            return  "Cannot edit Withdrawal Request";
         }
         
         request.setStatus(WithdrawalStatus.REJECTED);
         wdrRepo.add(request);
-        return true;
+        return  "Withdrawal Request rejected.";
     }
     
     // Get pending withdrawal requests

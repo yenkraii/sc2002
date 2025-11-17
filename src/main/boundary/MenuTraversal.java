@@ -1,5 +1,7 @@
 package src.main.boundary;
 
+import java.util.stream.Collectors;
+
 import src.main.control.*;
 
 import src.main.control.IPMSApplication;
@@ -31,12 +33,7 @@ public class MenuTraversal implements IHandleIO{
                             new String[] {"UserID", "Name", "Password", "Email", "Company Name", "Department", "Position"})); 
                         break;
                     case 1 :     
-                        if(!mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"}))){ 
-                            // didn't log in correctly
-                            System.out.println("Wrong userID or Password! Try again.");
-                            continue;
-                        }    
-                        System.out.println("\nSucessfully logged in!\n\n");
+                        System.out.println(mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"})));
                         break;
                 }
 
@@ -72,24 +69,30 @@ public class MenuTraversal implements IHandleIO{
     }
     
     public int studentMenu(){
-        final String[] lvl1StudentChoices = new String[] 
-            {"View Intern Listing", "View Applications", "Export All", "Change Password"};
+        final String[] StudentChoices = new String[] 
+            {"View Intern Listing", 
+            "Apply for Intern",
+            "View Applications", 
+            "Accept Placement",
+            "Request Withdrawal",
+            "Set Filters",
+            "Change Password"};
         
-        final String[] lvl2StudentChoices = new String[] 
-            {"Select", "Back"};
-        
-        displayMenu(lvl1StudentChoices);
-        switch (getMenuInput(lvl1StudentChoices.length)) {
+        displayMenu(StudentChoices);
+        switch (getMenuInput(StudentChoices.length)) {
             case 1:
-                // view intern listing
                 break;
             case 2:
-                // view apps
                 break;
             case 3:
-                // export all
                 break;
             case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
                 // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
                 return -1;
@@ -102,23 +105,32 @@ public class MenuTraversal implements IHandleIO{
 
     public int companyMenu(){
         final String[] lvl1CompanyChoices = new String[] 
-            {"View Intern Posting", "View Applications", "Export All", "Change Password"};
-        
-        final String[] lvl2CompanyChoices = new String[] 
-            {"Select", "Back"};
+            {"Create Opportunity", 
+            "View Opportunities", 
+            "Edit Opportunity", 
+            "Delete Opportunity", 
+            "Toggle Visibility", 
+            "View Applications", 
+            "Approve/Reject Application", 
+            "Change Password"};
         
         displayMenu(lvl1CompanyChoices);
         switch (getMenuInput(lvl1CompanyChoices.length)) {
             case 1:
-                // view intern listing
                 break;
             case 2:
-                // view apps
                 break;
             case 3:
-                // export all
                 break;
             case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
                 // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
                 return -1;
@@ -131,23 +143,32 @@ public class MenuTraversal implements IHandleIO{
     
     public int staffMenu(){
         final String[] lvl1StaffChoices = new String[] 
-            {"View Opportunities", "View Accounts", "Export All", "Change Password"};
-        
-        final String[] lvl2StaffChoices = new String[] 
-            {"Select", "Back"};
+            {"Approve/Reject Company Representatives", 
+            "Approve/Reject Internship Opportunities", 
+            "Generate Reports", 
+            "Delete Opportunity", 
+            "View All Opportunities", 
+            "Set Report Filters", 
+            "Approve/Reject Withdrawal", 
+            "Change Password"};
         
         displayMenu(lvl1StaffChoices);
         switch (getMenuInput(lvl1StaffChoices.length)) {
             case 1:
-                // view Opportunities
                 break;
             case 2:
-                // view accounts
                 break;
             case 3:
-                // export all
                 break;
             case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
                 // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
                 return -1;

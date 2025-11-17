@@ -3,6 +3,7 @@ package src.main.control;
 import java.util.Objects;
 
 import src.main.control.*;
+import src.main.entity.*;
 
 // this class faciltates interactions between controllers
 
@@ -38,9 +39,8 @@ public class IPMSApplication implements IMenuActions {
       return "";
     }
 
-    public boolean login(String[] usrInput){
-      if(usrControl.login(usrInput[0], usrInput[1])) return true;
-      return false;
+    public String login(String[] usrInput){
+      return usrControl.login(usrInput[0], usrInput[1]);
     }
 
     public void logout(){
@@ -55,4 +55,11 @@ public class IPMSApplication implements IMenuActions {
       usrControl.create(usrControl.getCurrrentUser(), usrInput);
       usrControl.update(usrInput[0], new String[] {usrInput[3]});
     }
-}
+
+    public String applyIntern(UserAccount user, String id){
+      return appControl.applyForInternship((Student) user, id);
+    }
+
+    
+
+  }

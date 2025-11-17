@@ -27,15 +27,20 @@ public class AuthController {
     // param department: rep department
     // param position: rep position in company
     // return true if registration successful
-    public boolean create(UserAccount actor, String[] infoToMap) {
+    public String create(UserAccount actor, String[] infoToMap) {
         String key = infoToMap[0];
-        if (userRepo.containsKey(key) || actor instanceof Student) {
-            return false; // user already exists
+
+        if(!(actor instanceof CenterStaff)){
+            return "Account not authorised to create account!";
+        }
+
+        if (userRepo.containsKey(key)) {
+            return "User already exists."; // user already exists
         }
 
         CompanyRep newRep = new CompanyRep(key, infoToMap[1], infoToMap[2], infoToMap[3], infoToMap[4], infoToMap[5], infoToMap[6]);
         userRepo.put(key, newRep);
-        return true;
+        return "Company Rep account created. Please wait for approval before logging in.";
     }
 
     // get current logged in user
@@ -53,7 +58,7 @@ public class AuthController {
     // param oldPassword: old password
     // param newPassword: new password
     // return true if successful
-    public boolean update(String id, String[] changeInfo) {
+    public String update(String id, String[] changeInfo) {
 
         UserAccount toChange = userRepo.get(id);
         String newPassword = changeInfo[0];
@@ -61,32 +66,32 @@ public class AuthController {
         if (toChange.changePassword(newPassword)) {
             userRepo.replace(id, toChange);
             pwdRepo.replace(id, newPassword);
-            return true;
+            return "Password changed successfully.";
         }
-        return false;
+        return "Error in changing password! Please try again";
     }
 
 
-    public boolean delete(String id){
+    public String delete(String id){
         if (userRepo.containsKey(id)){
             userRepo.remove(id);
-            return true;
+            return "Account deleted.";
         }
-        return false;
+        return "Error in account deletion.";
     }
 
     // log in user to system
-    public boolean login(String userID, String password) {
+    public String login(String userID, String password) {
         UserAccount user = userRepo.get(userID);
         if (user == null) {
-            return false;
+            return "User does not exist.";
         }
 
         if (user.login(password)) {
             this.currentUser = user;
-            return true;
+            return "Successfully Logged in.";
         }
-        return false;
+        return "Wrong Password!";
     }
 
     // log out current user
