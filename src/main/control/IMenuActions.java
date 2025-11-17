@@ -8,4 +8,6 @@ public interface IMenuActions {
     public boolean login(String[] usrInput);
     public void logout();
     public void changePassword(String[] usrInput);
+
+    public void registerCompanyRep(String[] usrInput);
 }

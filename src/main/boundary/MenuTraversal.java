@@ -22,16 +22,25 @@ public class MenuTraversal implements IHandleIO{
         while(true){
             
             if(!(mainSystem.isLoggedOn())){
-                displayMenu(new String[] {"Login"});
-                chosenOpt = getMenuInput(1);
-                if(chosenOpt == -1) break;
-                if(!mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"}))){ 
-                    // didn't log in correctly
-                    System.out.println("Wrong userID or Password! Try again.");
-                    continue;
+                displayMenu(new String[] {"Login", "Register Company Rep"});
+                chosenOpt = getMenuInput(2);
+                switch(chosenOpt){
+                    case -1: break;
+                    case 2 : 
+                        mainSystem.registerCompanyRep(getStringArrayInput(
+                            new String[] {"UserID", "Name", "Password", "Email", "Company Name", "Department", "Position"})); 
+                        break;
+                    case 1 :     
+                        if(!mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"}))){ 
+                            // didn't log in correctly
+                            System.out.println("Wrong userID or Password! Try again.");
+                            continue;
+                        }    
+                        System.out.println("\nSucessfully logged in!\n\n");
+                        break;
                 }
-                
-                System.out.println("\nSucessfully logged in!\n\n");
+
+                if (chosenOpt == -1) break;
 
             } else {
 

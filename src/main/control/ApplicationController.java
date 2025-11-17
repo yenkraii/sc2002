@@ -1,5 +1,6 @@
 package src.main.control;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import src.main.entity.*;
@@ -21,10 +22,12 @@ public class ApplicationController implements IEditLoadedData {
             return false;
         }
 
-        //TODO: REVISIT THE INTERNAPP CONNECTION
-
         InternshipApplication internApp = new InternshipApplication(actor, opp);
-        dataRepo.appRepo.put("", internApp);
+        ArrayList<InternshipApplication>  pre_existing =  dataRepo.appRepo.get(actor.getUserID());
+        if (pre_existing.size() > MAX_APPLICATIONS_PER_STUDENT) return false;
+        pre_existing.add(internApp);
+
+        dataRepo.appRepo.put(actor.getUserID(), pre_existing);
         return true;
 
     }
@@ -32,6 +35,7 @@ public class ApplicationController implements IEditLoadedData {
     public Object read(String id){
         return dataRepo.appRepo.get(id);
     }
+    
     public boolean update(String idToUpdate, String[] infoToMap){
         
         //TODO: REVISIT THE INTERNAPP CONNECTION

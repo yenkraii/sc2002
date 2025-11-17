@@ -55,4 +55,10 @@ public class IPMSApplication implements IMenuActions {
       AuthController ac = (AuthController) usrControl;
       ac.update(ac.getCurrrentUser().getUserID(), usrInput);
     }
+
+    public void registerCompanyRep(String[] usrInput){
+      AuthController ac = (AuthController) usrControl;
+      ac.create(ac.getCurrrentUser(), usrInput);
+      ac.update(usrInput[0], new String[] {usrInput[3]});
+    }
 }
