@@ -215,7 +215,7 @@ public class MenuTraversal implements IHandleIO{
         displayMenu(lvl1StaffChoices);
         switch (getMenuInput(lvl1StaffChoices.length)) {
             case 1: // approve / reject company rep
-                showRepoData(mainSystem.viewPendingReps());
+                if(showRepoData(mainSystem.viewPendingReps()) < 1) break;
                 showMessage(
                     mainSystem.processRep(
                         getStringInput("Enter RepID:"),
@@ -224,7 +224,7 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 2: // approve / reject intern opp
-                showRepoData(mainSystem.viewOpp());
+                if(showRepoData(mainSystem.viewOpp()) < 1) break;
                 showMessage(
                         mainSystem.processOpp(
                             getStringInput("Enter InternID:"),
@@ -253,6 +253,7 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 6: // approve / reject withdrawal
+                if(showRepoData(mainSystem.viewWdr()) < 1) break;
                 showRepoData(mainSystem.viewWdr());
                 showMessage(
                         mainSystem.processWdr(

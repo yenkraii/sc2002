@@ -59,14 +59,15 @@ public interface IHandleIO {
         System.out.println(msg);
     }
 
-    default public void showRepoData(List<String> data){
+    default public int showRepoData(List<String> data){
         if (data.size() < 1 || data == null) {
             System.out.println("No data in the repo!");
-            return;
+            return 0;
         }
         for(String line : data){
             System.out.println(line);
         }
+        return data.size();
     }
 
 }
