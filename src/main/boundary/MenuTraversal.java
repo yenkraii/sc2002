@@ -1,10 +1,8 @@
 package src.main.boundary;
 
-import java.util.stream.Collectors;
-
-import src.main.control.*;
-
 import src.main.control.IPMSApplication;
+import src.main.control.IMenuActions;
+
 
 // should only be interacting with control classes
 // boundary class of ConsoleUI cannot directly interact with entity classes
@@ -81,14 +79,18 @@ public class MenuTraversal implements IHandleIO{
         displayMenu(StudentChoices);
         switch (getMenuInput(StudentChoices.length)) {
             case 1: // view listing
+                showRepoData(mainSystem.viewOpp());
                 break;
-            case 2:
+            case 2: // apply for intern
             showMessage(
                 mainSystem.applyIntern(
                     getStringInput("Enter InternID:"))
                 );
                 break;
             case 3: // view applications
+                showRepoData(
+                    mainSystem.viewApp(getStringInput("Enter InternID:"))
+                );
                 break;
             case 4: // accept placement
                 showMessage(
@@ -104,6 +106,16 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 6: // set filters
+                mainSystem.setFilters(
+                    getStringArrayInput(
+                        new String[] {
+                            "Major",
+                            "Company Name",
+                            "Level (BASIC, INTERMEDIATE, ADVANCED)",
+                            "Status (PENDING, FILLED)"
+                        }
+                    )
+                );
                 break;
             case 7: // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
@@ -140,20 +152,28 @@ public class MenuTraversal implements IHandleIO{
                     })
                 );
                 break;
-            case 2:
+            case 2: // view opps
+                showRepoData(mainSystem.viewOpp());
                 break;
-            case 3:
+            case 3: // edit opp
                 break;
             case 4: // delete opp
                 showMessage(
                     mainSystem.deleteOpp(getStringInput("Enter InternID: "))
                 );
                 break;
-            case 5:
+            case 5: // toggle visibility
+                showMessage(
+                    mainSystem.toggleVisibility(getStringInput("Enter InternID: "))
+                );
                 break;
-            case 6:
+            case 6: // view applications
+                showRepoData(
+                    mainSystem.viewApp(getStringInput("Enter InternID:"))
+                );
                 break;
-            case 7:
+            case 7: // approve/reject app
+            
                 break;
             case 8:
                 // change password
@@ -190,11 +210,22 @@ public class MenuTraversal implements IHandleIO{
                     mainSystem.deleteOpp(getStringInput("Enter InternID: "))
                 );
                 break;
-            case 5:
+            case 5: // view opp
+                showRepoData(mainSystem.viewOpp());
                 break;
-            case 6:
+            case 6:// set filters
+                mainSystem.setFilters(
+                    getStringArrayInput(
+                        new String[] {
+                            "Major",
+                            "Company Name",
+                            "Level (BASIC, INTERMEDIATE, ADVANCED)",
+                            "Status (PENDING, FILLED, APPROVED, REJECTED)"
+                        }
+                    )
+                );
                 break;
-            case 7:
+            case 7: // approve / reject
                 break;
             case 8:
                 // change password

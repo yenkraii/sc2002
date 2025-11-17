@@ -24,7 +24,7 @@ public class OpportunityController{
         appRepo = mainRepo.appRepo;
     }
 
-    public InternshipOpportunity createOpportunity(CompanyRep companyRep,
+    public String createOpportunity(CompanyRep companyRep,
                                                    String title, String description,
                                                    InternshipLevel level, String major,
                                                    LocalDate openDate, LocalDate closeDate,
@@ -34,17 +34,17 @@ public class OpportunityController{
             filterByCompanyRep(companyRep.getUserID());
         
         if (existingOpps.size() >= MAX_OPPORTUNITIES_PER_REP) {
-            return null;
+            return "Limit of Opportunities reached.";
         }
         
         // Validate slots
         if (slots < 1 || slots > MAX_SLOTS) {
-            return null;
+            return "Invalid slot details.";
         }
         
         // Validate dates
         if (closeDate.isBefore(openDate)) {
-            return null;
+            return "Invalid closing date.";
         }
         
         InternshipOpportunity opp = new InternshipOpportunity(
@@ -53,7 +53,7 @@ public class OpportunityController{
         );
         
         oppRepo.put(opp.getInternshipID(), opp);
-        return opp;
+        return "Sucessful Creation.";
     }
     
 

@@ -1,5 +1,6 @@
 package src.main.boundary;
 
+import java.util.List;
 import java.util.Scanner;
 
 public interface IHandleIO {
@@ -56,6 +57,16 @@ public interface IHandleIO {
 
     default public void showMessage(String msg){
         System.out.println(msg);
+    }
+
+    default public void showRepoData(List<String> data){
+        if (data.size() < 1 || data == null) {
+            System.out.println("No data in the repo!");
+            return;
+        }
+        for(String line : data){
+            System.out.println(line);
+        }
     }
 
 }
