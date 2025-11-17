@@ -59,8 +59,6 @@ public class MenuTraversal implements IHandleIO{
             }
         }
 
-
-
         mainSystem.shutdown();
         consoleScanner.close();
         System.out.println("InternSys exited!");
@@ -208,7 +206,6 @@ public class MenuTraversal implements IHandleIO{
         final String[] lvl1StaffChoices = new String[] 
             {"Approve/Reject Company Representatives", 
             "Approve/Reject Internship Opportunities", 
-            "Generate Reports", 
             "Delete Opportunity", 
             "View All Opportunities", 
             "Set Report Filters", 
@@ -217,21 +214,33 @@ public class MenuTraversal implements IHandleIO{
         
         displayMenu(lvl1StaffChoices);
         switch (getMenuInput(lvl1StaffChoices.length)) {
-            case 1:
+            case 1: // approve / reject company rep
+                showRepoData(mainSystem.viewPendingReps());
+                showMessage(
+                    mainSystem.processRep(
+                        getStringInput("Enter RepID:"),
+                        getStringInput("Approve or reject?:")
+                    )
+                );
                 break;
-            case 2:
+            case 2: // approve / reject intern opp
+                showRepoData(mainSystem.viewOpp());
+                showMessage(
+                        mainSystem.processOpp(
+                            getStringInput("Enter InternID:"),
+                            getStringInput("Approve or reject?:")
+                        )
+                    );
                 break;
-            case 3:
-                break;
-            case 4: // delete opp
+            case 3: // delete opp
                 showMessage(
                     mainSystem.deleteOpp(getStringInput("Enter InternID: "))
                 );
                 break;
-            case 5: // view opp
+            case 4: // view opp
                 showRepoData(mainSystem.viewOpp());
                 break;
-            case 6:// set filters
+            case 5:// set filters
                 mainSystem.setFilters(
                     getStringArrayInput(
                         new String[] {
@@ -243,9 +252,16 @@ public class MenuTraversal implements IHandleIO{
                     )
                 );
                 break;
-            case 7: // approve / reject
+            case 6: // approve / reject withdrawal
+                showRepoData(mainSystem.viewWdr());
+                showMessage(
+                        mainSystem.processWdr(
+                            Integer.valueOf(getStringInput("Enter InternID:")),
+                            getStringInput("Approve or reject?:")
+                        )
+                    );
                 break;
-            case 8:
+            case 7:
                 // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
                 return -1;

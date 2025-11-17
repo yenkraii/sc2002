@@ -166,4 +166,36 @@ public class IPMSApplication implements IMenuActions {
         );
     }
 
+    public String processOpp(String internID, String decision){
+      if(decision.contains("a"))
+        return oppControl.approveOpportunity(usrControl.getCurrrentUser(), internID);
+      else
+          return oppControl.rejectOpportunity(usrControl.getCurrrentUser(), internID);
+    }
+
+    public String processWdr(int index, String decision){
+      if(index < -1) return "Invalid entry!";
+
+      List<WithdrawalRequest> allWdr = appControl.getPendingWithdrawalRequests();
+      if(decision.contains("a"))
+        return appControl.approveWithdrawalRequest(allWdr.get(index));
+      else
+          return appControl.rejectWithdrawalRequest(allWdr.get(index));
+    }
+
+    public List<String> viewWdr(){
+      return appControl.getPendingWithdrawalRequests().stream().map(wdr -> wdr.toString()).collect(Collectors.toList());
+    }
+
+    public List<String> viewPendingReps(){
+      return usrControl.viewPendingReps().stream().map(acc -> acc.toString()).collect(Collectors.toList());
+    }
+
+    public String processRep(String repID, String decision){
+      if(decision.contains("a"))
+        return usrControl.approveRep(repID);
+      else
+          return usrControl.rejectRep(repID);
+    }
+
   }

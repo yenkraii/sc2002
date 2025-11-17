@@ -1,11 +1,13 @@
 package src.main.control;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import src.main.entity.*;
 
-// controller for authentication operations
-// demonstrates SRP (handles only authentication)
+
 public class AuthController {
     private Map<String,UserAccount> userRepo;
     private Map<String,String> pwdRepo;
@@ -99,6 +101,36 @@ public class AuthController {
         if (this.currentUser != null) {
             this.currentUser = null;
         }
+    }
+
+    public List<UserAccount> viewPendingReps(){
+        return 
+        userRepo.values()
+        .stream().filter(acc -> acc.getRole() == "COMPANY_REP")
+        .filter(cr -> ((CompanyRep) cr).getStatus() == AccountStatus.PENDING_APPROVAL)
+        .collect(Collectors.toList());
+    }
+
+    public String approveRep(String repID){
+        if(userRepo.get(repID).getRole() != "COMPANY_REP") return "Not a company rep";
+        CompanyRep rep = (CompanyRep) userRepo.get(repID);
+
+        if (rep.getStatus() != AccountStatus.PENDING_APPROVAL)
+            return "Cannot edit this account!";
+
+        rep.setStatus(AccountStatus.APPROVED);
+        return "Approved";
+    }
+
+    public String rejectRep(String repID){
+        if(userRepo.get(repID).getRole() != "COMPANY_REP") return "Not a company rep";
+        CompanyRep rep = (CompanyRep) userRepo.get(repID);
+
+        if (rep.getStatus() != AccountStatus.PENDING_APPROVAL)
+            return "Cannot edit this account!";
+
+        rep.setStatus(AccountStatus.REJECTED);
+        return "Approved";
     }
 
 }

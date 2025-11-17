@@ -1,7 +1,6 @@
 package src.main.control;
 
 import java.util.List;
-import src.main.entity.*;
 
 public interface IMenuActions {
     public void setup();
@@ -16,18 +15,20 @@ public interface IMenuActions {
     public String applyIntern(String id);
     public List<String> viewOpp();
     public List<String> viewApp(String internID);
+    public String processApp(String internID, String studentID, String decision);
     public String acceptPlacement(String internID);
     public String requestWithdrawal(String internID, String reason);
 
     public String createOpp(String[] usrInput);
-    public String processApp(String internID, String studentID, String decision);
     public String editOpp(String[] usrInput);
     public String deleteOpp(String oppID);
     public String toggleVisibility(String oppID);
+    public String processOpp(String internID, String decision);
 
-    //public void manageCompanyReps();
-    //public void manageOpp();
-    //public void generateReports();
     public void setFilters(String[] input);
+    public String processWdr(int index, String decision);
+    public List<String> viewWdr();
+    public List<String> viewPendingReps();
+    public String processRep(String repID, String decision);
 
 }
