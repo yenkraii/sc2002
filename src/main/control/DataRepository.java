@@ -11,7 +11,7 @@ public class DataRepository implements IMainRepository {
     protected Map<String,UserAccount> userRepo;
     protected Map<String,InternshipOpportunity> oppRepo;
     protected Map<String,ArrayList<InternshipApplication>> appRepo;
-    protected Map<String,WithdrawalRequest> wdrRepo;
+    protected ArrayList<WithdrawalRequest> wdrRepo;
     protected Map<String,String> pwdRepo;
 
 
@@ -19,7 +19,7 @@ public class DataRepository implements IMainRepository {
         this.userRepo = new HashMap<String,UserAccount>();
         this.oppRepo = new HashMap<String,InternshipOpportunity>();
         this.appRepo = new HashMap<String,ArrayList<InternshipApplication>>();
-        this.wdrRepo = new HashMap<String,WithdrawalRequest>();
+        this.wdrRepo = new ArrayList<WithdrawalRequest>();
         this.pwdRepo = new HashMap<String,String>();
     }
     

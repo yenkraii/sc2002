@@ -6,7 +6,7 @@ import src.main.entity.*;
 
 // controller for authentication operations
 // demonstrates SRP (handles only authentication)
-public class AuthController implements IEditLoadedData{
+public class AuthController {
     private Map<String,UserAccount> userRepo;
     private Map<String,String> pwdRepo;
     private UserAccount currentUser;
