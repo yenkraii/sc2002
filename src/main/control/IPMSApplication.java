@@ -8,9 +8,9 @@ import src.main.control.*;
 
 public class IPMSApplication implements IMenuActions {
     private IMainRepository systemStorage;
-    private IEditLoadedData appControl;
-    private IEditLoadedData oppControl;
-    private IEditLoadedData usrControl;
+    private ApplicationController appControl;
+    private OpportunityController oppControl;
+    private AuthController usrControl;
 
     public IPMSApplication(){
       systemStorage = new DataRepository();
@@ -28,37 +28,31 @@ public class IPMSApplication implements IMenuActions {
     }
 
     public boolean isLoggedOn(){
-      AuthController ac = (AuthController) usrControl;
-      return (!Objects.isNull(ac.getCurrrentUser()));
+      return (!Objects.isNull(usrControl.getCurrrentUser()));
     }
 
     public String accountRole(){
       if (isLoggedOn()){
-        AuthController ac = (AuthController) usrControl;
-        return ac.getCurrrentUser().getRole();
+        return usrControl.getCurrrentUser().getRole();
       }
       return "";
     }
 
     public boolean login(String[] usrInput){
-      AuthController ac = (AuthController) usrControl;
-      if(ac.login(usrInput[0], usrInput[1])) return true;
+      if(usrControl.login(usrInput[0], usrInput[1])) return true;
       return false;
     }
 
     public void logout(){
-      AuthController ac = (AuthController) usrControl;
-      ac.logout();
+      usrControl.logout();
     }
 
     public void changePassword(String[] usrInput){
-      AuthController ac = (AuthController) usrControl;
-      ac.update(ac.getCurrrentUser().getUserID(), usrInput);
+      usrControl.update(usrControl.getCurrrentUser().getUserID(), usrInput);
     }
 
     public void registerCompanyRep(String[] usrInput){
-      AuthController ac = (AuthController) usrControl;
-      ac.create(ac.getCurrrentUser(), usrInput);
-      ac.update(usrInput[0], new String[] {usrInput[3]});
+      usrControl.create(usrControl.getCurrrentUser(), usrInput);
+      usrControl.update(usrInput[0], new String[] {usrInput[3]});
     }
 }

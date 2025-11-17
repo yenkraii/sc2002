@@ -1,4 +1,4 @@
 CompanyRepID,Name,CompanyName,Department,Position,Email,Status
-d,qwe,asd,ads,asd,asd,PENDING_APPROVAL
-hr12,asdad,fdas@hr.com,rrr,sales,sales,PENDING_APPROVAL
-qwe,bro,sales,hiring manager,bro@hr.com,cro,PENDING_APPROVAL
+d,qwe,ads,asd,asd,asd,PENDING_APPROVAL
+hr12,asdad,rrr,sales,sales,fdas@hr.com,PENDING_APPROVAL
+qwe,bro,hiring manager,bro@hr.com,cro,sales,PENDING_APPROVAL
