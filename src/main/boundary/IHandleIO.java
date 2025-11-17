@@ -48,4 +48,14 @@ public interface IHandleIO {
         return userInput;
     }
 
+    default public String getStringInput(String instruction){
+        consoleScanner.nextLine();
+        System.out.println(instruction);
+        return consoleScanner.nextLine().trim();
+    }
+
+    default public void showMessage(String msg){
+        System.out.println(msg);
+    }
+
 }

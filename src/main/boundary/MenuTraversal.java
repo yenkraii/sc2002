@@ -80,24 +80,35 @@ public class MenuTraversal implements IHandleIO{
         
         displayMenu(StudentChoices);
         switch (getMenuInput(StudentChoices.length)) {
-            case 1:
+            case 1: // view listing
                 break;
             case 2:
+            showMessage(
+                mainSystem.applyIntern(
+                    getStringInput("Enter InternID:"))
+                );
                 break;
-            case 3:
+            case 3: // view applications
                 break;
-            case 4:
+            case 4: // accept placement
+                showMessage(
+                    mainSystem.acceptPlacement(
+                        getStringInput("Enter InternID:")
+                        ));
                 break;
-            case 5:
+            case 5: // request withdrawal
+                showMessage(
+                    mainSystem.requestWithdrawal(
+                        getStringInput("Enter InternID:"), 
+                        getStringInput("State reason behind withdrawal:"))
+                );
                 break;
-            case 6:
+            case 6: // set filters
                 break;
-            case 7:
-                // change password
+            case 7: // change password
                 mainSystem.changePassword(getStringArrayInput(new String[] {"New Password"}));
                 return -1;
-            case -1:
-                // log out
+            case -1: // log out
                 return -1;
         }
         return 0;
@@ -116,13 +127,27 @@ public class MenuTraversal implements IHandleIO{
         
         displayMenu(lvl1CompanyChoices);
         switch (getMenuInput(lvl1CompanyChoices.length)) {
-            case 1:
+            case 1: // create opp
+                mainSystem.createOpp( 
+                    getStringArrayInput(new String[]{
+                        "Internship Title",
+                        "Description",
+                        "Level (BASIC, INTERMEDIATE, ADVANCED)",
+                        "Preferred Major",
+                        "Opening date",
+                        "Closing Date",
+                        "Number of Slots"
+                    })
+                );
                 break;
             case 2:
                 break;
             case 3:
                 break;
-            case 4:
+            case 4: // delete opp
+                showMessage(
+                    mainSystem.deleteOpp(getStringInput("Enter InternID: "))
+                );
                 break;
             case 5:
                 break;
@@ -160,7 +185,10 @@ public class MenuTraversal implements IHandleIO{
                 break;
             case 3:
                 break;
-            case 4:
+            case 4: // delete opp
+                showMessage(
+                    mainSystem.deleteOpp(getStringInput("Enter InternID: "))
+                );
                 break;
             case 5:
                 break;

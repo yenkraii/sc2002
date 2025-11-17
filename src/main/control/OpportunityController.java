@@ -211,6 +211,10 @@ public class OpportunityController{
         return all.stream().filter(app -> app.getInternship().equals(oppToCheck)).count();
     }
 
+    public InternshipOpportunity getOpp(String id){
+        return oppRepo.get(id);
+    }
+
 }
 
 
