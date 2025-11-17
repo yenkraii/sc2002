@@ -62,6 +62,12 @@ public class ApplicationController {
         return all.stream().filter(app -> app.getInternship().getInternshipID() == internshipID).collect(Collectors.toList());
     }
 
+    public InternshipApplication findApp(String userID, String internID){
+        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).collect(Collectors.toList());
+        return all.stream().filter(app -> (app.getApplicant().getUserID() == userID && app.getInternship().getInternshipID() == internID)).collect(Collectors.toList()).get(0);
+    }
+
+
     // Approve application (company rep)
     public String approveApplication(InternshipApplication application){
         Student student = application.getApplicant();

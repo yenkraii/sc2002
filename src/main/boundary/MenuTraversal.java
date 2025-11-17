@@ -156,6 +156,18 @@ public class MenuTraversal implements IHandleIO{
                 showRepoData(mainSystem.viewOpp());
                 break;
             case 3: // edit opp
+                mainSystem.editOpp( 
+                    getStringArrayInput(new String[]{
+                        "Intern Opp ID",
+                        "Internship Title",
+                        "Description",
+                        "Level (BASIC, INTERMEDIATE, ADVANCED)",
+                        "Preferred Major",
+                        "Opening date",
+                        "Closing Date",
+                        "Number of Slots"
+                    })
+                );
                 break;
             case 4: // delete opp
                 showMessage(
@@ -173,7 +185,13 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 7: // approve/reject app
-            
+                    showMessage(
+                        mainSystem.processApp(
+                            getStringInput("Enter InternID:"),
+                            getStringInput("Enter Student ID:"),
+                            getStringInput("Approve or reject?:")
+                        )
+                    );
                 break;
             case 8:
                 // change password

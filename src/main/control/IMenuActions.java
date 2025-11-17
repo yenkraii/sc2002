@@ -20,8 +20,8 @@ public interface IMenuActions {
     public String requestWithdrawal(String internID, String reason);
 
     public String createOpp(String[] usrInput);
-    //public String processApp(CompanyRep rep);
-    //public String editOpp(CompanyRep rep);
+    public String processApp(String internID, String studentID, String decision);
+    public String editOpp(String[] usrInput);
     public String deleteOpp(String oppID);
     public String toggleVisibility(String oppID);
 

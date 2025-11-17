@@ -1,10 +1,8 @@
 package src.main.control;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import src.main.control.*;
@@ -85,10 +83,10 @@ public class IPMSApplication implements IMenuActions {
         usrInput[0], 
         usrInput[1], 
         InternshipLevel.valueOf(usrInput[2]), 
-        usrInput[5], 
-        LocalDate.parse(usrInput[3]), 
+        usrInput[3], 
         LocalDate.parse(usrInput[4]), 
-        Integer.parseInt(usrInput[5])
+        LocalDate.parse(usrInput[5]), 
+        Integer.parseInt(usrInput[6])
         );
     }
 
@@ -145,6 +143,27 @@ public class IPMSApplication implements IMenuActions {
         default:
           return "Unauthorised action.";
       }
+    }
+
+    public String processApp(String internID, String studentID, String decision){
+      if(decision.contains("a"))
+        return appControl.approveApplication(appControl.findApp(studentID, internID));
+      else
+          return appControl.rejectApplication(appControl.findApp(studentID, internID));
+    }
+
+    public String editOpp(String[] usrInput){
+      return oppControl.updateOpportunity(
+        usrInput[0], 
+        usrControl.getCurrrentUser().getUserID(), 
+        usrInput[1], 
+        usrInput[2], 
+        InternshipLevel.valueOf(usrInput[3]), 
+        usrInput[5], 
+        LocalDate.parse(usrInput[6]), 
+        LocalDate.parse(usrInput[7]), 
+        Integer.parseInt(usrInput[8])
+        );
     }
 
   }
