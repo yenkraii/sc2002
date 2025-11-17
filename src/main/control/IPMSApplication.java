@@ -1,6 +1,8 @@
 package src.main.control;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ public class IPMSApplication implements IMenuActions {
     private AuthController usrControl;
 
     private ReportFilter reportFilter;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public IPMSApplication(){
       systemStorage = new DataRepository();
@@ -58,7 +61,7 @@ public class IPMSApplication implements IMenuActions {
     }
 
     public void registerCompanyRep(String[] usrInput){
-      usrControl.create(usrControl.getCurrrentUser(), usrInput);
+      usrControl.create(usrInput);
       usrControl.update(usrInput[0], new String[] {usrInput[3]});
     }
 
@@ -84,8 +87,8 @@ public class IPMSApplication implements IMenuActions {
         usrInput[1], 
         InternshipLevel.valueOf(usrInput[2]), 
         usrInput[3], 
-        LocalDate.parse(usrInput[4]), 
-        LocalDate.parse(usrInput[5]), 
+        LocalDate.parse(usrInput[4], formatter), 
+        LocalDate.parse(usrInput[5], formatter), 
         Integer.parseInt(usrInput[6])
         );
     }
@@ -160,8 +163,8 @@ public class IPMSApplication implements IMenuActions {
         usrInput[2], 
         InternshipLevel.valueOf(usrInput[3]), 
         usrInput[5], 
-        LocalDate.parse(usrInput[6]), 
-        LocalDate.parse(usrInput[7]), 
+        LocalDate.parse(usrInput[6], formatter), 
+        LocalDate.parse(usrInput[7], formatter), 
         Integer.parseInt(usrInput[8])
         );
     }

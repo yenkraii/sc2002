@@ -29,12 +29,8 @@ public class AuthController {
     // param department: rep department
     // param position: rep position in company
     // return true if registration successful
-    public String create(UserAccount actor, String[] infoToMap) {
+    public String create(String[] infoToMap) {
         String key = infoToMap[0];
-
-        if(!(actor instanceof CenterStaff)){
-            return "Account not authorised to create account!";
-        }
 
         if (userRepo.containsKey(key)) {
             return "User already exists."; // user already exists

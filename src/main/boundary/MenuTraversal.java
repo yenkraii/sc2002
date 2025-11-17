@@ -161,8 +161,8 @@ public class MenuTraversal implements IHandleIO{
                         "Description",
                         "Level (BASIC, INTERMEDIATE, ADVANCED)",
                         "Preferred Major",
-                        "Opening date",
-                        "Closing Date",
+                        "Opening date (yyyy-MM-dd)",
+                        "Closing Date (yyyy-MM-dd)",
                         "Number of Slots"
                     })
                 );
