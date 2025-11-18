@@ -3,11 +3,12 @@ package src.main.control;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import src.main.entity.*;
 
-// Controller for application operations 
+// Controller for application operations
 public class ApplicationController {
     private Map<String,ArrayList<InternshipApplication>> appRepo;
     private Map<String,InternshipOpportunity> oppRepo;
@@ -28,7 +29,10 @@ public class ApplicationController {
         }
 
         // Check max applications 
-        ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
+        ArrayList<InternshipApplication> pre_existing =  appRepo.get(student.getUserID());
+        if (pre_existing == null) {
+            pre_existing = new ArrayList<>();
+        }
         if (pre_existing.size() >= MAX_APPLICATIONS_PER_STUDENT){
             return "Max applications reached.";
         }
@@ -58,13 +62,13 @@ public class ApplicationController {
 
     // View applications for internship 
     public List<InternshipApplication> viewInternshipApplications(String internshipID){
-        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).collect(Collectors.toList());
-        return all.stream().filter(app -> app.getInternship().getInternshipID() == internshipID).collect(Collectors.toList());
+        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).toList();
+        return all.stream().filter(app -> Objects.equals(app.getInternship().getInternshipID(), internshipID)).collect(Collectors.toList());
     }
 
     public InternshipApplication findApp(String userID, String internID){
-        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).collect(Collectors.toList());
-        return all.stream().filter(app -> (app.getApplicant().getUserID() == userID && app.getInternship().getInternshipID() == internID)).collect(Collectors.toList()).get(0);
+        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).toList();
+        return all.stream().filter(app -> (Objects.equals(app.getApplicant().getUserID(), userID) && Objects.equals(app.getInternship().getInternshipID(), internID))).toList().getFirst();
     }
 
 
@@ -117,7 +121,7 @@ public class ApplicationController {
         }
 
         if (application.getStatus() != ApplicationStatus.SUCCESSFUL) {
-            return "Application not Sucessfully";
+            return "Application not Successfully";
         }
 
         // Check if student already accepted a placement
