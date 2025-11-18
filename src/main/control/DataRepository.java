@@ -218,15 +218,20 @@ public class DataRepository implements IMainRepository {
         }
     }
     public void saveInternOpp(String filename){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
-            bw.write("title,description,level,major,openingDate,closingDate,companyName,repId,slots\n");
-            for(InternshipOpportunity opp : oppRepo.values()){
-                bw.write(String.join(",",opp.export()) + "\n");
-            }
-        } catch(IOException e){
-            System.out.println(e.getMessage());
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+
+        bw.write("id,title,description,level,major,openingDate,closingDate,companyName,repId,slots,slotsConfirmed,visible,status\n");
+
+        for (InternshipOpportunity opp : oppRepo.values()){
+            bw.write(String.join(",", opp.export()));
+            bw.write("\n");
         }
+
+    } catch(IOException e){
+        System.out.println(e.getMessage());
     }
+}
+
     public void saveInternApp(String filename){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
             bw.write("studentId,oppId\n");
@@ -278,30 +283,41 @@ public class DataRepository implements IMainRepository {
             File file = new File(filename);
             if (!file.exists()) {
                 return;
-            }   
+            }
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine(); // skip header
+
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
-                String[] inputInfo = processLine(line);
-                InternshipOpportunity opp = new InternshipOpportunity(inputInfo[0], 
-                                                    inputInfo[1], 
-                                                    inputInfo[2], 
-                                                    inputInfo[3], 
-                                                    inputInfo[4],
-                                                    inputInfo[5],
-                                                    inputInfo[6],
-                                                    inputInfo[7],
-                                                    inputInfo[8]);
-                oppRepo.put(opp.getInternshipID(), opp);
+
+                String[] info = processLine(line);
+
+                InternshipOpportunity opp = new InternshipOpportunity(
+                    info[0],                                // ID
+                    info[1],                                // title
+                    info[2],                                // description
+                    InternshipLevel.valueOf(info[3]),       // level
+                    info[4],                                // major
+                    LocalDate.parse(info[5]),               // open
+                    LocalDate.parse(info[6]),               // close
+                    info[7],                                // company
+                    info[8],                                // rep ID
+                    Integer.parseInt(info[9]),              // slots
+                    Integer.parseInt(info[10]),             // slotsConfirmed
+                    Boolean.parseBoolean(info[11]),         // visible
+                    InternshipStatus.valueOf(info[12])      // status
+                );
+
+                oppRepo.put(info[0], opp);
             }
+
             reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + filename);
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println("Error loading internship opportunities: " + e.getMessage());
         }
     }
-}
+
