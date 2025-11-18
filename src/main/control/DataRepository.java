@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDate;   // ← REQUIRED IMPORT ADDED
 
 public class DataRepository implements IMainRepository {
     protected Map<String,UserAccount> userRepo;
@@ -36,9 +37,6 @@ public class DataRepository implements IMainRepository {
         loadInternOpp("data/intern_opp_list.csv");
         loadInternApp("data/intern_app_list.csv");
         
-        // Optionally create sample opportunities for testing
-        //loadSampleOpportunities();
-        
         System.out.println("Data loading complete!");
     }
 
@@ -63,7 +61,7 @@ public class DataRepository implements IMainRepository {
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine(); 
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
@@ -87,16 +85,13 @@ public class DataRepository implements IMainRepository {
     public void loadCareerStaff(String filename) {
         try {
             File file = new File(filename);
-            if (!file.exists()) {
-                return;
-            }
+            if (!file.exists()) return;
             
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                
                 if (line.isEmpty()) continue;
                 
                 String[] inputInfo = processLine(line);
@@ -108,9 +103,7 @@ public class DataRepository implements IMainRepository {
                                                 inputInfo[4]));
             }
             reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + filename);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
@@ -118,12 +111,11 @@ public class DataRepository implements IMainRepository {
     public void loadCompanyReps(String filename) {
         try {
             File file = new File(filename);
-            if (!file.exists()) {
-                return;
-            }   
+            if (!file.exists()) return;
+            
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
@@ -138,9 +130,7 @@ public class DataRepository implements IMainRepository {
                                                 inputInfo[6]));
             }
             reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + filename);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
@@ -148,25 +138,20 @@ public class DataRepository implements IMainRepository {
     public void loadUserAuth(String filename){
         try {
             File file = new File(filename);
-            if (!file.exists()) {
-                return;
-            }
+            if (!file.exists()) return;
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                
                 if (line.isEmpty()) continue;
                 
                 String[] inputInfo = processLine(line);
                 pwdRepo.put(inputInfo[0], inputInfo[1]);
-
             }
             reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + filename);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
@@ -189,6 +174,7 @@ public class DataRepository implements IMainRepository {
             System.out.println(e.getMessage());
         }
     }
+
     public void saveUsers(String staffFile, String companyFile, String studentFile){
         try{
             BufferedWriter staffBW = new BufferedWriter(new FileWriter(staffFile));
@@ -211,26 +197,28 @@ public class DataRepository implements IMainRepository {
                 }
             }
 
-            staffBW.close();companyBW.close();studentBW.close();
+            staffBW.close();
+            companyBW.close();
+            studentBW.close();
 
         } catch(IOException e){
             System.out.println(e.getMessage());
         }
     }
+
     public void saveInternOpp(String filename){
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+            bw.write("id,title,description,level,major,openingDate,closingDate,companyName,repId,slots,slotsConfirmed,visible,status\n");
 
-        bw.write("id,title,description,level,major,openingDate,closingDate,companyName,repId,slots,slotsConfirmed,visible,status\n");
+            for (InternshipOpportunity opp : oppRepo.values()){
+                bw.write(String.join(",", opp.export()));
+                bw.write("\n");
+            }
 
-        for (InternshipOpportunity opp : oppRepo.values()){
-            bw.write(String.join(",", opp.export()));
-            bw.write("\n");
+        } catch(IOException e){
+            System.out.println(e.getMessage());
         }
-
-    } catch(IOException e){
-        System.out.println(e.getMessage());
     }
-}
 
     public void saveInternApp(String filename){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
@@ -247,15 +235,15 @@ public class DataRepository implements IMainRepository {
     public void loadInternApp(String filename){
         try {
             File file = new File(filename);
-            if (!file.exists()) {
-                return;
-            }   
+            if (!file.exists()) return;
+
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // automatically skip first header row
+            reader.readLine();
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
+
                 String[] inputInfo = processLine(line);
                 Student applicant = (Student)userRepo.get(inputInfo[0]);
                 InternshipApplication app = new InternshipApplication(applicant, oppRepo.get(inputInfo[1]));
@@ -264,30 +252,26 @@ public class DataRepository implements IMainRepository {
                     ArrayList<InternshipApplication> temp = appRepo.get(inputInfo[0]);
                     temp.add(app);
                     appRepo.put(applicant.getUserID(), temp);
-                }else{
+                } else {
                     ArrayList<InternshipApplication> temp = new ArrayList<>();
                     temp.add(app);
                     appRepo.put(applicant.getUserID(), temp);
                 }
             }
             reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + filename);
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error reading intern apps: " + e.getMessage());
         }
     }
 
     public void loadInternOpp(String filename){
         try {
             File file = new File(filename);
-            if (!file.exists()) {
-                return;
-            }
+            if (!file.exists()) return;
 
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            reader.readLine(); // skip header
+            reader.readLine();
 
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -296,19 +280,19 @@ public class DataRepository implements IMainRepository {
                 String[] info = processLine(line);
 
                 InternshipOpportunity opp = new InternshipOpportunity(
-                    info[0],                                // ID
-                    info[1],                                // title
-                    info[2],                                // description
-                    InternshipLevel.valueOf(info[3]),       // level
-                    info[4],                                // major
-                    LocalDate.parse(info[5]),               // open
-                    LocalDate.parse(info[6]),               // close
-                    info[7],                                // company
-                    info[8],                                // rep ID
-                    Integer.parseInt(info[9]),              // slots
-                    Integer.parseInt(info[10]),             // slotsConfirmed
-                    Boolean.parseBoolean(info[11]),         // visible
-                    InternshipStatus.valueOf(info[12])      // status
+                    info[0],
+                    info[1],
+                    info[2],
+                    InternshipLevel.valueOf(info[3]),
+                    info[4],
+                    LocalDate.parse(info[5]),
+                    LocalDate.parse(info[6]),
+                    info[7],
+                    info[8],
+                    Integer.parseInt(info[9]),
+                    Integer.parseInt(info[10]),
+                    Boolean.parseBoolean(info[11]),
+                    InternshipStatus.valueOf(info[12])
                 );
 
                 oppRepo.put(info[0], opp);
@@ -320,4 +304,4 @@ public class DataRepository implements IMainRepository {
             System.err.println("Error loading internship opportunities: " + e.getMessage());
         }
     }
-
+}
