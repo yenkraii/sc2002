@@ -101,6 +101,7 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String deleteOpp(String oppID){
+      if(oppControl.getOpp(oppID) == null) return "Opportunity doesn't exist";
       switch (usrControl.getCurrrentUser().getRole()) {
         case "COMPANY_REP":
           return oppControl.deleteOpportunity(oppID, usrControl.getCurrrentUser().getUserID());
@@ -144,6 +145,7 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String toggleVisibility(String oppID){
+      if(oppControl.getOpp(oppID) == null) return "Opportunity doesn't exist";
       InternshipOpportunity opp = oppControl.getOpp(oppID);
       switch (usrControl.getCurrrentUser().getRole()) {
         case "COMPANY_REP":
@@ -156,7 +158,8 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String processApp(String internID, String studentID, String decision){
-      if(decision.contains("a"))
+      if(appControl.findApp(studentID, internID) == null) return "Application doesn't exist";
+      if(decision.toLowerCase().contains("a"))
         return appControl.approveApplication(appControl.findApp(studentID, internID));
       else
           return appControl.rejectApplication(appControl.findApp(studentID, internID));
@@ -177,7 +180,8 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String processOpp(String internID, String decision){
-      if(decision.contains("a"))
+      if(oppControl.getOpp(internID) == null) return "Opportunity doesn't exist";
+      if(decision.toLowerCase().contains("a"))
         return oppControl.approveOpportunity(usrControl.getCurrrentUser(), internID);
       else
           return oppControl.rejectOpportunity(usrControl.getCurrrentUser(), internID);
@@ -207,7 +211,7 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String processRep(String repID, String decision){
-      if(decision.contains("a"))
+      if(decision.toLowerCase().contains("a"))
         return usrControl.approveRep(repID);
       else
           return usrControl.rejectRep(repID);
