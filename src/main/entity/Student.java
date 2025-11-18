@@ -1,18 +1,23 @@
 package src.main.entity;
 
-// Student entity class
-// extends UserAccount to inherit common properties
+/**
+ * Represents a student user in the internship system.
+ * Extends UserAccount and contains student-specific properties.
+ */
 public class Student extends UserAccount{
     private int yearOfStudy;
     private String major;
     private boolean hasAcceptedPlacement;
 
-    // constructor for Student
-    // param userID: student ID
-    // param name: student name
-    // param password: student password
-    // param yearOfStudy: year of study (1-4)
-    // param major: student major
+    /**
+     * Constructs a Student with specified details.
+     * @param userID Student ID.
+     * @param name Student’s name.
+     * @param password Student’s password.
+     * @param email Student’s email.
+     * @param yearOfStudy Year of study (1-4).
+     * @param major Student’s major.
+     */
     public Student(String UserID, String name, String password, String email, int yearOfStudy, String major) {
         super(UserID, name, password, email);  // userID might need to be changed to protected
         this.yearOfStudy = yearOfStudy;
@@ -50,9 +55,11 @@ public class Student extends UserAccount{
         return "STUDENT";
     }
 
-    // check if student is eligible for internship level
-    // param level: internship level to check
-    // return true if eligible
+    /**
+     * Checks if the student is eligible for a given internship level.
+     * @param level Internship level to check.
+     * @return True if eligible, otherwise false.
+     */
     public boolean isEligibleForLevel(InternshipLevel level) {
         if (yearOfStudy <= 2) {
             return level == InternshipLevel.BASIC;

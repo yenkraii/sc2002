@@ -21,7 +21,13 @@ public class ApplicationController {
         wdrRepo = mainRepo.wdrRepo;
     }
 
-    // Apply for internship
+    /**
+     * Applies for an internship on behalf of a student.
+     * Performs all eligibility and application checks before submission.
+     * @param student The student applying for the internship.
+     * @param internshipID The ID of the internship opportunity.
+     * @return Status message indicating the success or reason for failure.
+     */
     public String applyForInternship(Student student, String internshipID){
         // Check if student already accepted a placement 
         if (student.hasAcceptedPlacement()){
@@ -63,12 +69,21 @@ public class ApplicationController {
         return "Application successful.";
     }
 
-    // View applications for internship 
+    /**
+     * Views all applications for a specified internship opportunity.
+     * @param internshipID The ID of the opportunity to view applications for.
+     * @return A list of internship applications matching the opportunity.
+     */
     public List<InternshipApplication> viewInternshipApplications(String internshipID){
         List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).toList();
         return all.stream().filter(app -> Objects.equals(app.getInternship().getInternshipID(), internshipID)).collect(Collectors.toList());
     }
-
+    /**
+     * Finds a specific application by user and internship opportunity.
+     * @param userID The ID of the user.
+     * @param internID The ID of the internship.
+     * @return The matching InternshipApplication, or null if not found.
+     */
     public InternshipApplication findApp(String userID, String internID){
         return appRepo.values().stream()
                 .flatMap(ArrayList::stream)
@@ -81,7 +96,12 @@ public class ApplicationController {
 
 
 
-    // Approve application (company rep)
+    /**
+     * Approves an internship application.
+     * Performs validation and updates status if checks pass.
+     * @param application The application to approve.
+     * @return Status message indicating the result of approval.
+     */
     public String approveApplication(InternshipApplication application){
         // Do ALL validation FIRST
         if (application.getStatus() != ApplicationStatus.PENDING){
@@ -101,7 +121,12 @@ public class ApplicationController {
         return "Application approved.";
     }
 
-    // Reject application (company rep)
+    /**
+     * Rejects an internship application.
+     * Performs validation and updates status if checks pass.
+     * @param application The application to reject.
+     * @return Status message indicating the result of rejection.
+     */
     public String rejectApplication(InternshipApplication application){
         Student student = application.getApplicant();
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
@@ -117,7 +142,13 @@ public class ApplicationController {
         return "Rejected successfully";
     }
 
-    // Accept placement (student)
+    /**
+     * Accepts a placement for a student’s application.
+     * Updates records and withdraws other applications.
+     * @param studentID The ID of the student accepting placement.
+     * @param application The application to accept.
+     * @return Status message indicating the result.
+     */
     public String acceptPlacement(String studentID, InternshipApplication application) {
         ArrayList<InternshipApplication>  pre_existing =  appRepo.get(studentID);
         pre_existing.remove(application);
@@ -162,8 +193,15 @@ public class ApplicationController {
         
         return "Accepted Opportunity!";
     }
-    
-    // Request withdrawal (requires staff approval)
+
+    /**
+     * Requests withdrawal from an accepted placement.
+     * Generates a withdrawal request for staff approval.
+     * @param studentID The ID of the student.
+     * @param application The application to withdraw from.
+     * @param reason Reason for requesting withdrawal.
+     * @return Status message on withdrawal submission.
+     */
     public String requestWithdrawal(String studentID, InternshipApplication application, String reason) {
         if (!application.getApplicant().getUserID().equals(studentID)) {
             return "Unable to withdraw";
@@ -174,8 +212,13 @@ public class ApplicationController {
         wdrRepo.add(request);
         return "Submitted Withdrawal Request";
     }
-    
-    // Approve withdrawal request (center staff)
+
+    /**
+     * Approves a pending withdrawal request.
+     * Updates records and opportunity slot counts.
+     * @param request The withdrawal request to approve.
+     * @return Status message indicating result of approval.
+     */
     public String approveWithdrawalRequest(WithdrawalRequest request) {
         
         wdrRepo.remove(request);
@@ -206,8 +249,13 @@ public class ApplicationController {
         
         return "Withdrawal Request approved.";
     }
-    
-    // Reject withdrawal request (center Staff)
+
+    /**
+     * Rejects a withdrawal request.
+     * Updates the status and records accordingly.
+     * @param request The withdrawal request to reject.
+     * @return Status message indicating result of rejection.
+     */
     public String rejectWithdrawalRequest(WithdrawalRequest request) {
         wdrRepo.remove(request);
         if (request.getStatus() != WithdrawalStatus.PENDING) {
@@ -218,8 +266,11 @@ public class ApplicationController {
         wdrRepo.add(request);
         return  "Withdrawal Request rejected.";
     }
-    
-    // Get pending withdrawal requests
+
+    /**
+     * Retrieves all pending withdrawal requests for staff review.
+     * @return List of withdrawal requests with a pending status.
+     */
     public List<WithdrawalRequest> getPendingWithdrawalRequests() {
         return wdrRepo.stream().filter(req -> req.getStatus() == WithdrawalStatus.PENDING).collect(Collectors.toList());
     }

@@ -4,8 +4,10 @@ import java.time.LocalDate;
 
 import src.main.entity.WithdrawalStatus;
 
-// represents student's request to withdraw from an internship
-// requires center staff approval
+/**
+ * Represents a student's request to withdraw from an internship placement.
+ * Withdrawal requires approval from centre staff.
+ */
 public class WithdrawalRequest {
     private InternshipApplication application;
     private Student student;
@@ -13,8 +15,14 @@ public class WithdrawalRequest {
     private String reason;
     private boolean isAfterConfirmation;
     private WithdrawalStatus status;
-
-    // constructor for WithdrawalRequest
+    /**
+     * Constructs a WithdrawalRequest for a specified internship application and student.
+     * Initially set to PENDING status with reason and current request date.
+     * Tracks if request is after placement confirmation.
+     * @param application The internship application being withdrawn from.
+     * @param student The student making the withdrawal request.
+     * @param reason Explanation for withdrawal.
+     */
     public WithdrawalRequest(InternshipApplication application, Student student, String reason) {
         this.application = application;
         this.student = student;

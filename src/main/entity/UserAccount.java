@@ -1,19 +1,22 @@
 package src.main.entity;
 
-// abstract base class for all user accounts in system
-// demonstrates encapsulation & abstraction principles
-
+/**
+ * Abstract base class for all user accounts in the system.
+ * Demonstrates encapsulation and abstraction principles.
+ */
 public abstract class UserAccount {
     protected String userID;
     protected String name;
     protected String password;
     protected AccountStatus status;
     protected String email;
-
-    // constructor for UserAccount
-    // param userID: unique identifier for user
-    // param name: full name of user
-    // param password: user's password
+    /**
+     * Constructs a UserAccount with specified user details.
+     * @param userID Unique identifier for user.
+     * @param name Full name of user.
+     * @param password User’s password.
+     * @param email Email address of user.
+     */
     public UserAccount(String userID, String name, String password, String email) {
         this.userID = userID;
         this.name = name;
@@ -52,17 +55,20 @@ public abstract class UserAccount {
     }
 
 
-    // login validation - template method pattern
-    // param inputPassword: password to validate
-    // return true if login successful
+    /**
+     * Performs login validation for this account.
+     * @param inputPassword Password for validation.
+     * @return True if login is successful and account approved, else false.
+     */
     public boolean login(String inputPassword) {
         return this.password.equals(inputPassword) && this.status == AccountStatus.APPROVED;
     }
 
-    // change password functionality
-    // param oldPassword: current password
-    // param newPassword: new password to set
-    // return true if password changed successfully
+    /**
+     * Changes the account password.
+     * @param newPass The new password to set.
+     * @return True if password changed successfully, false otherwise.
+     */
     public boolean changePassword(String newPass) {
         if (this.password.equals(newPass)) {
             return false;    
@@ -71,11 +77,16 @@ public abstract class UserAccount {
         return true;
         
     }
-
+    /**
+     * Abstract method for exporting account details.
+     * @return String for export (e.g., CSV format).
+     */
     public abstract String[] export();
 
-    // abstract method for getting user role (polymorphism)
-    // return String representation of user role
+    /**
+     * Abstract method for retrieving user role.
+     * @return String representing the user role.
+     */
     public abstract String getRole();
 
     @Override

@@ -2,7 +2,10 @@ package src.main.entity;
 
 import java.time.LocalDate;
 
-// represents student's application for an internship
+/**
+ * Represents a student's application for an internship.
+ * Tracks application status, applicant, applied internship, submission date, and placement status.
+ */
 public class InternshipApplication{
     private ApplicationStatus status;
     private Student applicant;
@@ -10,9 +13,12 @@ public class InternshipApplication{
     private LocalDate applicationDate;
     private boolean placementConfirmed; // track if student accepted placement
 
-    // constructor for InternshipApplication
-    // param applicant: student applying
-    // param internship: internship being applied to
+    /**
+     * Constructs a new internship application for a student and opportunity.
+     * Application starts as PENDING.
+     * @param applicant Student submitting application.
+     * @param internship Internship being applied for.
+     */
     public InternshipApplication(Student applicant, InternshipOpportunity internship) {
         this.status = ApplicationStatus.PENDING;
         this.applicant = applicant;
@@ -45,7 +51,11 @@ public class InternshipApplication{
     public void setStatus(ApplicationStatus status) {
         this.status = status;
     }
-
+    /**
+     * Sets if the student's placement is confirmed.
+     * Also updates the status to CONFIRMED if true.
+     * @param confirmed True if confirmed.
+     */
     public void setPlacementConfirmed(boolean confirmed) {
         this.placementConfirmed = confirmed;
         if (confirmed) {
@@ -53,7 +63,9 @@ public class InternshipApplication{
         }
     }
 
-    // withdraw application
+    /**
+     * Withdraws the application, setting its status to WITHDRAWN.
+     */
     public void withdraw() {
         this.status = ApplicationStatus.WITHDRAWN;
     }

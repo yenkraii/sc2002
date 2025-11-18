@@ -3,7 +3,10 @@ package src.main.entity;
 // Filter criteria for generating reports 
 
 import java.time.LocalDate;
-
+/**
+ * Represents filter criteria for generating internship opportunity reports.
+ * Stores combinations of status, major, level, company, and closing date.
+ */
 public class ReportFilter {
   private InternshipStatus status;
   private String major; 
@@ -11,7 +14,9 @@ public class ReportFilter {
   private String companyName;
   private LocalDate closingDate;
 
-  // Default constructor 
+  /**
+  * Creates a new, empty filter (no criteria set).
+  */
   public ReportFilter(){
   }
 
@@ -55,7 +60,10 @@ public class ReportFilter {
     this.closingDate = closingDate;
   }
 
-  // Clear all filters
+  /**
+  * Clears all filter criteria.
+  * All fields reset to null.
+  */
   public void clearAll(){
     this.status = null;
     this.major = null;
@@ -64,7 +72,11 @@ public class ReportFilter {
     this.closingDate = null;
   }
 
-  // Check if opportunity matches filter criteria 
+  /**
+   * Checks whether an internship opportunity matches the filter settings.
+   * @param opp InternshipOpportunity to test.
+   * @return True if matching, otherwise false.
+   */
   public boolean matches(InternshipOpportunity opp){
     if (status!= null && opp.getStatus()!= status)
       return false;

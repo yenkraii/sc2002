@@ -17,7 +17,11 @@ public class MenuTraversal implements IHandleIO{
     MenuTraversal(){
         mainSystem = new IPMSApplication();
     }
-    
+    /**
+     * Starts the main menu loop for the application.
+     * Handles user authentication, account role selection, and system shutdown.
+     * Calls studentMenu, staffMenu, or companyMenu based on the user's account role.
+     */
     public void start(){
         mainSystem.setup();
         int chosenOpt = -1;
@@ -68,7 +72,12 @@ public class MenuTraversal implements IHandleIO{
         consoleScanner.close();
         System.out.println("InternSys exited!");
     }
-    
+    /**
+     * Displays and handles the student menu options.
+     * Allows students to view listings, apply for internships, manage applications,
+     * accept placements, request withdrawals, set filters, and change passwords.
+     * @return -1 if user logs out, 0 otherwise.
+     */
     public int studentMenu(){
         final String[] StudentChoices = new String[] 
             {"View Intern Listing", 
@@ -129,6 +138,12 @@ public class MenuTraversal implements IHandleIO{
         return 0;
     }
 
+    /**
+     * Displays and handles the company representative menu options.
+     * Enables company representatives to create, view, edit, delete, and toggle visibility
+     * of opportunities, view applications, process approvals/rejections, and change passwords.
+     * @return -1 if user logs out, 0 otherwise.
+     */
     public int companyMenu(){
         final String[] lvl1CompanyChoices = new String[] 
             {"Create Opportunity", 
@@ -206,7 +221,14 @@ public class MenuTraversal implements IHandleIO{
         }
         return 0;
     }
-    
+
+    /**
+     * Displays and handles the centre staff menu options.
+     * Enables staff to approve/reject company representatives and internship opportunities,
+     * delete opportunities, view all opportunities, set report filters, approve/reject withdrawals,
+     * and change passwords.
+     * @return -1 if user logs out, 0 otherwise.
+     */
     public int staffMenu(){
         final String[] lvl1StaffChoices = new String[] 
             {"Approve/Reject Company Representatives", 
