@@ -144,7 +144,7 @@ public class OpportunityController{
     // param oppID: opportunity ID
     // return true if successful
     public String approveOpportunity(UserAccount actor,String oppID) {
-        if (!(actor instanceof CompanyRep)) return "Not authorised to edit!";
+        if (!(actor instanceof CenterStaff)) return "Not authorised to edit!";
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
