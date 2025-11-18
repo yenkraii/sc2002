@@ -60,7 +60,7 @@ public interface IHandleIO {
     }
 
     default public int showRepoData(List<String> data){
-        if (data.size() < 1 || data == null) {
+        if (data.isEmpty() || data == null) {
             System.out.println("No data in the repo!");
             return 0;
         }
