@@ -68,7 +68,16 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String acceptPlacement(String internID){
-      return appControl.acceptPlacement(usrControl.getCurrrentUser().getUserID(), appControl.viewInternshipApplications(internID).get(0));
+        String currentUserID = usrControl.getCurrrentUser().getUserID();
+
+        // Find THIS student's application for this internship
+        InternshipApplication myApp = appControl.findApp(currentUserID, internID);
+
+        if (myApp == null) {
+            return "You have no application for this internship!";
+        }
+
+        return appControl.acceptPlacement(currentUserID, myApp);
     }
 
     public String requestWithdrawal(String internID, String reason){
@@ -94,10 +103,10 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     public String deleteOpp(String oppID){
       switch (usrControl.getCurrrentUser().getRole()) {
         case "COMPANY_REP":
-          return oppControl.deleteOpportunity(oppID, usrControl.getCurrrentUser().getUserID());    
+          return oppControl.deleteOpportunity(oppID, usrControl.getCurrrentUser().getUserID());
 
         case "CENTER_STAFF":
-          return oppControl.deleteOpportunity(oppID, oppControl.getOpp(oppID).getCompanyRepInCharge());    
+          return oppControl.deleteOpportunity(oppID, oppControl.getOpp(oppID).getCompanyRepInCharge());
 
         default:
           return "Unauthorised action.";
@@ -175,13 +184,18 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String processWdr(int index, String decision){
-      if(index < -1) return "Invalid entry!";
+        if(index < 0) return "Invalid entry!";
 
-      List<WithdrawalRequest> allWdr = appControl.getPendingWithdrawalRequests();
-      if(decision.contains("a"))
-        return appControl.approveWithdrawalRequest(allWdr.get(index));
-      else
-          return appControl.rejectWithdrawalRequest(allWdr.get(index));
+        List<WithdrawalRequest> allWdr = appControl.getPendingWithdrawalRequests();
+
+        if(index >= allWdr.size()) {
+            return "Invalid withdrawal request number!";
+        }
+
+        if(decision.contains("a"))
+            return appControl.approveWithdrawalRequest(allWdr.get(index));
+        else
+            return appControl.rejectWithdrawalRequest(allWdr.get(index));
     }
 
     public List<String> viewWdr(){

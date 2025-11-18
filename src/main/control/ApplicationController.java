@@ -48,8 +48,9 @@ public class ApplicationController {
         }
 
         // Check if already applied 
-        List <InternshipApplication> existingApps = appRepo.get(student.getUserID());
-        boolean alreadyApplied = existingApps.stream().anyMatch(app -> app.getInternship().getInternshipID().equals(internshipID));
+        // Use pre_existing for everything (already null-checked above)
+        boolean alreadyApplied = pre_existing.stream()
+                .anyMatch(app -> app.getInternship().getInternshipID().equals(internshipID));
         if (alreadyApplied){
             return "Applied already!";
         }
@@ -74,24 +75,21 @@ public class ApplicationController {
 
     // Approve application (company rep)
     public String approveApplication(InternshipApplication application){
-        Student student = application.getApplicant();
-        ArrayList<InternshipApplication>  pre_existing =  appRepo.get(student.getUserID());
-        pre_existing.remove(application);
-        
-        if (application.getStatus()!=ApplicationStatus.PENDING){
+        // Do ALL validation FIRST
+        if (application.getStatus() != ApplicationStatus.PENDING){
             return "Application is not available";
         }
 
-        // Check if slots available 
         InternshipOpportunity opp = application.getInternship();
-        if (opp.getAvailableSlots() <=0){
+        if (opp.getAvailableSlots() <= 0){
             return "Insufficient slots for opportunity";
         }
 
+        // ONLY modify after all checks pass
         application.setStatus(ApplicationStatus.SUCCESSFUL);
-        
-        pre_existing.add(application);
-        appRepo.put(student.getUserID(), pre_existing);
+
+        // No need to remove/add - just update the status
+        // The object in the ArrayList is the same reference!
         return "Application approved.";
     }
 
