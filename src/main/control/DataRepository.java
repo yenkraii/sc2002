@@ -33,8 +33,8 @@ public class DataRepository implements IMainRepository {
         loadCareerStaff("data/staff_list.csv");
         loadCompanyReps("data/company_representative_list.csv");
 
-        loadInternApp("data/intern_app_list.csv");
         loadInternOpp("data/intern_opp_list.csv");
+        loadInternApp("data/intern_app_list.csv");
         
         // Optionally create sample opportunities for testing
         //loadSampleOpportunities();

@@ -101,16 +101,17 @@ public class AuthController {
     }
 
     public List<UserAccount> viewPendingReps(){
-        return 
-        userRepo.values()
-        .stream().filter(acc -> acc.getRole() == "COMPANY_REP")
-        .filter(cr -> ((CompanyRep) cr).getStatus() == AccountStatus.PENDING_APPROVAL)
-        .collect(Collectors.toList());
+        return userRepo.values()
+                .stream()
+                .filter(acc -> "COMPANY_REP".equals(acc.getRole()))
+                .filter(cr -> ((CompanyRep) cr).getStatus() == AccountStatus.PENDING_APPROVAL)
+                .collect(Collectors.toList());
     }
 
     public String approveRep(String repID){
-        if(userRepo.get(repID).getRole() != "COMPANY_REP") return "Not a company rep";
-        CompanyRep rep = (CompanyRep) userRepo.get(repID);
+        UserAccount acc = userRepo.get(repID);
+        if (acc == null || !"COMPANY_REP".equals(acc.getRole())) return "Not a company rep";
+        CompanyRep rep = (CompanyRep) acc;
 
         if (rep.getStatus() != AccountStatus.PENDING_APPROVAL)
             return "Cannot edit this account!";
@@ -120,14 +121,16 @@ public class AuthController {
     }
 
     public String rejectRep(String repID){
-        if(userRepo.get(repID).getRole() != "COMPANY_REP") return "Not a company rep";
-        CompanyRep rep = (CompanyRep) userRepo.get(repID);
+        UserAccount acc = userRepo.get(repID);
+        if (acc == null || !"COMPANY_REP".equals(acc.getRole())) return "Not a company rep";
+        CompanyRep rep = (CompanyRep) acc;
 
         if (rep.getStatus() != AccountStatus.PENDING_APPROVAL)
             return "Cannot edit this account!";
 
         rep.setStatus(AccountStatus.REJECTED);
-        return "Approved";
+        return "Rejected";
     }
+
 
 }
