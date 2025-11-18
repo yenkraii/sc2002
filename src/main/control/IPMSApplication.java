@@ -160,10 +160,10 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
         usrInput[1], 
         usrInput[2], 
         InternshipLevel.valueOf(usrInput[3]), 
-        usrInput[5], 
-        LocalDate.parse(usrInput[6], formatter), 
-        LocalDate.parse(usrInput[7], formatter), 
-        Integer.parseInt(usrInput[8])
+        usrInput[4],
+        LocalDate.parse(usrInput[5], formatter),
+        LocalDate.parse(usrInput[6], formatter),
+        Integer.parseInt(usrInput[7])
         );
     }
 
