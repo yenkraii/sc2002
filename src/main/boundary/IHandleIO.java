@@ -37,17 +37,12 @@ public interface IHandleIO {
     }
 
     default public String[] getStringArrayInput(String[] fields){
-        // Only consume leftover newline if necessary
-        if (consoleScanner.hasNextLine() && consoleScanner.hasNext("\\n")) {
-            consoleScanner.nextLine();
-        }
-
+        consoleScanner.nextLine();
         int noFieldsExpected = fields.length;
         if (noFieldsExpected < 1) return null;
-
         System.out.println("Please key in " + noFieldsExpected + " entries.");
         String[] userInput = new String[noFieldsExpected];
-        for(int i = 0; i < noFieldsExpected; i++){
+        for(int i = 0; i < noFieldsExpected; i ++){
             System.out.printf("%s: ", fields[i]);
             userInput[i] = consoleScanner.nextLine().trim();
         }
