@@ -131,7 +131,7 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
           lsOpp = oppControl.getVisibleOpportunities((Student)usrControl.getCurrrentUser(), reportFilter);
           break;
         default:
-          return null;
+          lsOpp = oppControl.filterUsingReportFilter(reportFilter);
       }
       return lsOpp.stream().map(app -> app.toString()).collect(Collectors.toList());
     }
