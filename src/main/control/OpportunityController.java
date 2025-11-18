@@ -162,7 +162,7 @@ public class OpportunityController{
     // param oppID: opportunity ID
     // return true if successful
     public String rejectOpportunity(UserAccount actor, String oppID) {
-        if (!(actor instanceof CompanyRep)) return "Not authorised.";
+        if (!(actor instanceof CenterStaff)) return "Not authorised.";
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
