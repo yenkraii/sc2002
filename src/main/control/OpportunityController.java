@@ -73,6 +73,11 @@ public class OpportunityController{
                                     InternshipLevel level, String major,
                                     LocalDate openDate, LocalDate closeDate,
                                     int slots) {
+        
+        if(!oppRepo.containsKey(oppID)){
+            return "Listing "+ oppID + "doesn't exist in repo!";
+        }
+
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
@@ -107,9 +112,14 @@ public class OpportunityController{
     // param: repID: company rep ID
     // return true if successful
     public String deleteOpportunity(String oppID, String repID) {
+
+        if(!oppRepo.containsKey(oppID)){
+            return "Listing "+ oppID + "doesn't exist in repo!";
+        }
+
         InternshipOpportunity opp = oppRepo.get(oppID);
-        
-        if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
+
+        if (!opp.getCompanyRepInCharge().equals(repID)) {
             return "No access to this opportunity";
         }
         
@@ -128,9 +138,14 @@ public class OpportunityController{
     // param filter: optional filter
     // return list of eligible opportunitie
     public String toggleVisibility(String oppID, String repID, boolean visible) {
+        
+        if(!oppRepo.containsKey(oppID)){
+            return "Listing "+ oppID + "doesn't exist in repo!";
+        }
+
         InternshipOpportunity opp = oppRepo.get(oppID);
         
-        if (opp == null || !opp.getCompanyRepInCharge().equals(repID)) {
+        if (!opp.getCompanyRepInCharge().equals(repID)) {
             return "Cannot edit!";
         }
         
@@ -145,6 +160,11 @@ public class OpportunityController{
     // return true if successful
     public String approveOpportunity(UserAccount actor,String oppID) {
         if (!(actor instanceof CenterStaff)) return "Not authorised to edit!";
+        
+        if(!oppRepo.containsKey(oppID)){
+            return "Listing "+ oppID + "doesn't exist in repo!";
+        }
+
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
@@ -162,7 +182,12 @@ public class OpportunityController{
     // param oppID: opportunity ID
     // return true if successful
     public String rejectOpportunity(UserAccount actor, String oppID) {
-        if (!(actor instanceof CompanyRep)) return "Not authorised.";
+        if (!(actor instanceof CenterStaff)) return "Not authorised.";
+        
+        if(!oppRepo.containsKey(oppID)){
+            return "Listing "+ oppID + "doesn't exist in repo!";
+        }
+
         InternshipOpportunity opp = oppRepo.get(oppID);
         
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {

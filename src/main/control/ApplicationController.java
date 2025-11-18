@@ -28,6 +28,8 @@ public class ApplicationController {
             return "Student already has an accepted internship";
         }
 
+        if(!appRepo.containsKey(internshipID)) return "Internship ID doesn't exist";
+
         // Check max applications 
         ArrayList<InternshipApplication> pre_existing =  appRepo.get(student.getUserID());
         if (pre_existing == null) {
