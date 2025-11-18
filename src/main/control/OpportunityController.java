@@ -195,7 +195,7 @@ public class OpportunityController{
     public List<InternshipOpportunity> filterByCompanyRep(String repID){
         return oppRepo.values()
                     .stream()
-                    .filter(opp -> opp.getCompanyRepInCharge() == repID)
+                    .filter(opp -> opp.getCompanyRepInCharge().equals(repID))
                     .collect(Collectors.toList());
     }
 
