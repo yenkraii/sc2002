@@ -1,6 +1,9 @@
 package src.main.boundary;
 
 import src.main.control.IPMSApplication;
+import src.main.control.IStaffActions;
+import src.main.control.IStudentActions;
+import src.main.control.ICompanyActions;
 import src.main.control.IMenuActions;
 
 
@@ -77,34 +80,34 @@ public class MenuTraversal implements IHandleIO{
         displayMenu(StudentChoices);
         switch (getMenuInput(StudentChoices.length)) {
             case 1: // view listing
-                showRepoData(mainSystem.viewOpp());
+                showRepoData(((IStudentActions)mainSystem).viewOpp());
                 break;
             case 2: // apply for intern
             showMessage(
-                mainSystem.applyIntern(
+                ((IStudentActions)mainSystem).applyIntern(
                     getStringInput("Enter InternID:"))
                 );
                 break;
             case 3: // view applications
                 showRepoData(
-                    mainSystem.viewApp(getStringInput("Enter InternID:"))
+                    ((IStudentActions)mainSystem).viewApp(getStringInput("Enter InternID:"))
                 );
                 break;
             case 4: // accept placement
                 showMessage(
-                    mainSystem.acceptPlacement(
+                    ((IStudentActions)mainSystem).acceptPlacement(
                         getStringInput("Enter InternID:")
                         ));
                 break;
             case 5: // request withdrawal
                 showMessage(
-                    mainSystem.requestWithdrawal(
+                    ((IStudentActions)mainSystem).requestWithdrawal(
                         getStringInput("Enter InternID:"), 
                         getStringInput("State reason behind withdrawal:"))
                 );
                 break;
             case 6: // set filters
-                mainSystem.setFilters(
+                ((IStudentActions)mainSystem).setFilters(
                     getStringArrayInput(
                         new String[] {
                             "Major",
@@ -138,7 +141,7 @@ public class MenuTraversal implements IHandleIO{
         displayMenu(lvl1CompanyChoices);
         switch (getMenuInput(lvl1CompanyChoices.length)) {
             case 1: // create opp
-                mainSystem.createOpp( 
+                ((ICompanyActions)mainSystem).createOpp( 
                     getStringArrayInput(new String[]{
                         "Internship Title",
                         "Description",
@@ -151,10 +154,10 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 2: // view opps
-                showRepoData(mainSystem.viewOpp());
+                showRepoData(((ICompanyActions)mainSystem).viewOpp());
                 break;
             case 3: // edit opp
-                mainSystem.editOpp( 
+                ((ICompanyActions)mainSystem).editOpp( 
                     getStringArrayInput(new String[]{
                         "Intern Opp ID",
                         "Internship Title",
@@ -169,22 +172,22 @@ public class MenuTraversal implements IHandleIO{
                 break;
             case 4: // delete opp
                 showMessage(
-                    mainSystem.deleteOpp(getStringInput("Enter InternID: "))
+                    ((ICompanyActions)mainSystem).deleteOpp(getStringInput("Enter InternID: "))
                 );
                 break;
             case 5: // toggle visibility
                 showMessage(
-                    mainSystem.toggleVisibility(getStringInput("Enter InternID: "))
+                    ((ICompanyActions)mainSystem).toggleVisibility(getStringInput("Enter InternID: "))
                 );
                 break;
             case 6: // view applications
                 showRepoData(
-                    mainSystem.viewApp(getStringInput("Enter InternID:"))
+                    ((ICompanyActions)mainSystem).viewApp(getStringInput("Enter InternID:"))
                 );
                 break;
             case 7: // approve/reject app
                     showMessage(
-                        mainSystem.processApp(
+                        ((ICompanyActions)mainSystem).processApp(
                             getStringInput("Enter InternID:"),
                             getStringInput("Enter Student ID:"),
                             getStringInput("Approve or reject?:")
@@ -215,9 +218,9 @@ public class MenuTraversal implements IHandleIO{
         displayMenu(lvl1StaffChoices);
         switch (getMenuInput(lvl1StaffChoices.length)) {
             case 1: // approve / reject company rep
-                if(showRepoData(mainSystem.viewPendingReps()) < 1) break;
+                if(showRepoData(((IStaffActions)mainSystem).viewPendingReps()) < 1) break;
                 showMessage(
-                    mainSystem.processRep(
+                    ((IStaffActions)mainSystem).processRep(
                         getStringInput("Enter RepID:"),
                         getStringInput("Approve or reject?:")
                     )
@@ -226,7 +229,7 @@ public class MenuTraversal implements IHandleIO{
             case 2: // approve / reject intern opp
                 if(showRepoData(mainSystem.viewOpp()) < 1) break;
                 showMessage(
-                        mainSystem.processOpp(
+                        ((IStaffActions)mainSystem).processOpp(
                             getStringInput("Enter InternID:"),
                             getStringInput("Approve or reject?:")
                         )
@@ -234,7 +237,7 @@ public class MenuTraversal implements IHandleIO{
                 break;
             case 3: // delete opp
                 showMessage(
-                    mainSystem.deleteOpp(getStringInput("Enter InternID: "))
+                    ((IStaffActions)mainSystem).deleteOpp(getStringInput("Enter InternID: "))
                 );
                 break;
             case 4: // view opp
@@ -253,10 +256,10 @@ public class MenuTraversal implements IHandleIO{
                 );
                 break;
             case 6: // approve / reject withdrawal
-                if(showRepoData(mainSystem.viewWdr()) < 1) break;
-                showRepoData(mainSystem.viewWdr());
+                if(showRepoData(((IStaffActions)mainSystem).viewWdr()) < 1) break;
+                showRepoData(((IStaffActions)mainSystem).viewWdr());
                 showMessage(
-                        mainSystem.processWdr(
+                        ((IStaffActions)mainSystem).processWdr(
                             Integer.valueOf(getStringInput("Enter InternID:")),
                             getStringInput("Approve or reject?:")
                         )

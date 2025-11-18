@@ -1,6 +1,5 @@
 package src.main.control;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,7 +11,7 @@ import src.main.entity.*;
 
 // this class faciltates interactions between controllers
 
-public class IPMSApplication implements IMenuActions {
+public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffActions, IStudentActions {
     private IMainRepository systemStorage;
     private ApplicationController appControl;
     private OpportunityController oppControl;
