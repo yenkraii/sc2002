@@ -165,7 +165,8 @@ public class InternshipOpportunity {
     }
 
     public boolean isEligibleStudent(Student student){
-        return student.getMajor().equalsIgnoreCase(preferredMajor) && student.isEligibleForLevel(this.internshipLevel);
+        return //student.getMajor().equalsIgnoreCase(preferredMajor) && 
+        student.isEligibleForLevel(this.internshipLevel);
     }
     
     public String toString() {

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import src.main.control.*;
 import src.main.entity.*;
 
-// this class facilitates interactions between controllers
+// this class faciltates interactions between controllers
 
 public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffActions, IStudentActions {
     private IMainRepository systemStorage;
@@ -48,14 +48,8 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String login(String[] usrInput){
-        String msg = usrControl.login(usrInput[0], usrInput[1]);
-        if ("Successfully Logged in.".equals(msg)) {
-            // Each user gets a clean filter state
-            reportFilter.clearAll();
-        }
-        return msg;
+      return usrControl.login(usrInput[0], usrInput[1]);
     }
-
 
     public void logout(){
       usrControl.logout();
@@ -87,16 +81,11 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String requestWithdrawal(String internID, String reason){
-        String studentId = usrControl.getCurrrentUser().getUserID();
-        InternshipApplication myApp = appControl.findApp(studentId, internID);
-
-        if (myApp == null) {
-            return "You have no application for this internship!";
-        }
-
-        return appControl.requestWithdrawal(studentId, myApp, reason);
+      return appControl.requestWithdrawal(
+          usrControl.getCurrrentUser().getUserID(),  
+          appControl.viewInternshipApplications(internID).get(0), 
+          reason);
     }
-
 
     public String createOpp(String[] usrInput){
       return oppControl.createOpportunity(
@@ -148,27 +137,11 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public void setFilters(String[] input){
-        // Major
-        reportFilter.setMajor(input[0].isBlank() ? null : input[0]);
-
-        // Company name
-        reportFilter.setCompanyName(input[1].isBlank() ? null : input[1]);
-
-        // Level
-        if (input[2].isBlank()) {
-            reportFilter.setLevel(null);
-        } else {
-            reportFilter.setLevel(InternshipLevel.valueOf(input[2].toUpperCase()));
-        }
-
-        // Status
-        if (input[3].isBlank()) {
-            reportFilter.setStatus(null);
-        } else {
-            reportFilter.setStatus(InternshipStatus.valueOf(input[3].toUpperCase()));
-        }
+      reportFilter.setMajor(input[0]);
+      reportFilter.setCompanyName(input[1]);
+      reportFilter.setLevel(InternshipLevel.valueOf(input[2]));
+      reportFilter.setStatus(InternshipStatus.valueOf(input[3]));
     }
-
 
     public String toggleVisibility(String oppID){
       InternshipOpportunity opp = oppControl.getOpp(oppID);
@@ -183,19 +156,11 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
     }
 
     public String processApp(String internID, String studentID, String decision){
-        InternshipApplication app = appControl.findApp(studentID, internID);
-        if (app == null) {
-            return "Application not found.";
-        }
-
-        String lower = decision.toLowerCase();
-        if (lower.startsWith("a")) { // "approve", "accept", etc.
-            return appControl.approveApplication(app);
-        } else {
-            return appControl.rejectApplication(app);
-        }
+      if(decision.contains("a"))
+        return appControl.approveApplication(appControl.findApp(studentID, internID));
+      else
+          return appControl.rejectApplication(appControl.findApp(studentID, internID));
     }
-
 
     public String editOpp(String[] usrInput){
       return oppControl.updateOpportunity(

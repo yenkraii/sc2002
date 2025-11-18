@@ -53,7 +53,7 @@ public class OpportunityController{
         );
         
         oppRepo.put(opp.getInternshipID(), opp);
-        return "Successful Creation.";
+        return "Sucessful Creation.";
     }
     
 
@@ -119,14 +119,14 @@ public class OpportunityController{
         }
         
         oppRepo.remove(oppID);
-        return "Deletion successful";
+        return "Deletion sucessful";
     }
 
 
     // get visible opportunities for student
     // param student: student requesting opportunities
     // param filter: optional filter
-    // return list of eligible opportunities
+    // return list of eligible opportunitie
     public String toggleVisibility(String oppID, String repID, boolean visible) {
         InternshipOpportunity opp = oppRepo.get(oppID);
         
@@ -136,7 +136,7 @@ public class OpportunityController{
         
         opp.setVisibility(visible);
         oppRepo.put(opp.getInternshipID(), opp);
-        return "Visibility updated.";
+        return "Vissiblity updated.";
     }
     
 
@@ -162,18 +162,17 @@ public class OpportunityController{
     // param oppID: opportunity ID
     // return true if successful
     public String rejectOpportunity(UserAccount actor, String oppID) {
-        if (!(actor instanceof CenterStaff)) return "Not authorised.";
+        if (!(actor instanceof CompanyRep)) return "Not authorised.";
         InternshipOpportunity opp = oppRepo.get(oppID);
-
+        
         if (opp == null || opp.getStatus() != InternshipStatus.PENDING) {
             return "Cannot edit";
         }
-
+        
         opp.setStatus(InternshipStatus.REJECTED);
         oppRepo.put(opp.getInternshipID(), opp);
         return "Rejected opportunity.";
     }
-
     
     
     // get visible opportunities for student
@@ -195,11 +194,10 @@ public class OpportunityController{
 
     public List<InternshipOpportunity> filterByCompanyRep(String repID){
         return oppRepo.values()
-                .stream()
-                .filter(opp -> repID.equals(opp.getCompanyRepInCharge()))
-                .collect(Collectors.toList());
+                    .stream()
+                    .filter(opp -> opp.getCompanyRepInCharge() == repID)
+                    .collect(Collectors.toList());
     }
-
 
     public List<InternshipOpportunity> filterUsingReportFilter(ReportFilter reportFilter){
         return oppRepo.values()
@@ -209,13 +207,9 @@ public class OpportunityController{
     }
 
     public long getNumberOfApplicants(InternshipOpportunity oppToCheck){
-        return appRepo.values().stream()
-                .flatMap(ArrayList::stream)
-                .filter(app -> app.getInternship() != null
-                        && app.getInternship().equals(oppToCheck))
-                .count();
+        List<InternshipApplication> all = appRepo.values().stream().flatMap(ArrayList :: stream).collect(Collectors.toList());
+        return all.stream().filter(app -> app.getInternship().equals(oppToCheck)).count();
     }
-
 
     public InternshipOpportunity getOpp(String id){
         return oppRepo.get(id);
