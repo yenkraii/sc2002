@@ -2,7 +2,7 @@ package src.main.boundary;
 
 /**
  * Main application entry point / boundary class for interacting with actors
- * @author SC2002 SCMB Group5
+ * @author SC2002 SCMB Group2
  */
 
 
