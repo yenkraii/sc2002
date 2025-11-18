@@ -59,9 +59,8 @@ public class IPMSApplication implements IMenuActions, ICompanyActions, IStaffAct
       usrControl.update(usrControl.getCurrrentUser().getUserID(), usrInput);
     }
 
-    public void registerCompanyRep(String[] usrInput){
-      usrControl.create(usrInput);
-      usrControl.update(usrInput[0], new String[] {usrInput[3]});
+    public String registerCompanyRep(String[] usrInput){
+      return usrControl.create(usrInput);
     }
 
     public String applyIntern(String id){

@@ -10,7 +10,7 @@ public interface IMenuActions {
     public String login(String[] usrInput);
     public void logout();
     public void changePassword(String[] usrInput);
-    public void registerCompanyRep(String[] usrInput);
+    public String registerCompanyRep(String[] usrInput);
     public void setFilters(String[] input);
     public List<String> viewOpp();
 

@@ -29,9 +29,11 @@ public class MenuTraversal implements IHandleIO{
                 chosenOpt = getMenuInput(2);
                 switch(chosenOpt){
                     case -1: break;
-                    case 2 : 
-                        mainSystem.registerCompanyRep(getStringArrayInput(
-                            new String[] {"UserID", "Name", "Password", "Email", "Company Name", "Department", "Position"})); 
+                    case 2 :
+                        showMessage(mainSystem.registerCompanyRep(getStringArrayInput(
+                            new String[] {"UserID", "Name", "Password", "Email", "Company Name", "Department", "Position"}))
+                            ); 
+                        
                         break;
                     case 1 :     
                         System.out.println(mainSystem.login(getStringArrayInput(new String[] {"UserID", "Password"})));

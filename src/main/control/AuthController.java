@@ -38,6 +38,7 @@ public class AuthController {
 
         CompanyRep newRep = new CompanyRep(key, infoToMap[1], infoToMap[2], infoToMap[3], infoToMap[4], infoToMap[5], infoToMap[6]);
         userRepo.put(key, newRep);
+        pwdRepo.put(key, newRep.getPassword());
         return "Company Rep account created. Please wait for approval before logging in.";
     }
 
@@ -62,8 +63,8 @@ public class AuthController {
         String newPassword = changeInfo[0];
 
         if (toChange.changePassword(newPassword)) {
-            userRepo.replace(id, toChange);
-            pwdRepo.replace(id, newPassword);
+            userRepo.put(id, toChange);
+            pwdRepo.put(id, newPassword);
             return "Password changed successfully.";
         }
         return "Error in changing password! Please try again";
